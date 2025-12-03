@@ -107,7 +107,7 @@ public class Maze {
             // Notice -- don't use i and j. Use row and column -- they are better
             for (int row = 0; row < rows; row++) {
                 for (int column = 0; column < columns; column++) {
-                    Room newRoom = roomFactory.createRoom(String.valueOf(row * columns + column));
+                    Room newRoom = roomFactory.createRoom(String.valueOf("Room " + row * columns + column));
                     roomGrid[row][column] = newRoom;
                     rooms.add(newRoom);
                 }
@@ -129,32 +129,6 @@ public class Maze {
                 }
             }
             return this;
-        }
-
-
-        public Builder createRooms(List<String> roomNames) {
-            maze.rooms = new ArrayList<>();
-            for (String roomName : roomNames) {
-                Room currentRoom = roomFactory.createRoom(roomName);
-                roomMap.put(currentRoom.getName(), currentRoom);
-                maze.rooms.add(currentRoom);
-            }
-            return this;
-        }
-
-        public void connectRooms(Integer minConnections) {
-            if (maze.size() < 2) {
-                return;
-            }
-            int realMinimumConnections = Math.min(minConnections, Math.max(maze.size() - 1, 1));
-            for (Room room : maze.rooms) {
-                while (room.numberOfNeighbors() < realMinimumConnections) {
-                    Room neighbor = nextRoom();
-                    if (!room.equals(neighbor) && !room.hasNeighbor(neighbor)) {
-                        room.addNeighbor(neighbor);
-                    }
-                }
-            }
         }
 
         public Builder add(Character character) {
@@ -205,11 +179,6 @@ public class Maze {
             return roomMap.get(roomName);
         }
 
-        public Builder distributeSequentially() {
-            distributeRandomly = false;
-            return this;
-        }
-
         public Builder distributeRandomly() {
             distributeRandomly = true;
             return this;
@@ -217,16 +186,6 @@ public class Maze {
 
         public Builder createDungeon(int rows, int columns) {
             createGridOfRooms(rows, columns);
-            return this;
-        }
-
-        private Builder createRooms(int numberOfRooms) {
-            maze.rooms = new ArrayList<>();
-            IntStream.range(0, numberOfRooms).forEach(unused -> {
-                Room currentRoom = roomFactory.createRoom();
-                roomMap.put(currentRoom.getName(), currentRoom);
-                maze.rooms.add(currentRoom);
-            });
             return this;
         }
     }

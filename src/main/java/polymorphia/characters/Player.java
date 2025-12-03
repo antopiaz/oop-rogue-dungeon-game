@@ -27,15 +27,15 @@ public class Player extends Character {
     public void doAction() {
         String action = getAction();
 
-        if (action.equals("fight")) {
+        if (action.equals("fight")) { //TODO pick creature by name
             fight(getCurrentLocation().getCreature());
             System.out.println("You're fight!");
         }
-        if (action.equals("move")){
+        if (action.equals("move")){ //TODO add direction
             move(getCurrentLocation().getRandomNeighbor());
             System.out.println("You're move!");
         }
-        if (action.equals("eat")) {
+        if (action.equals("eat")) { //TODO pick food by name
             eat(getCurrentLocation().getFood());
             System.out.println("You ate!");
         }
