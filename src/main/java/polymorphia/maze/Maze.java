@@ -107,7 +107,7 @@ public class Maze {
             // Notice -- don't use i and j. Use row and column -- they are better
             for (int row = 0; row < rows; row++) {
                 for (int column = 0; column < columns; column++) {
-                    Room newRoom = roomFactory.createRoom(String.valueOf("Room " + row * columns + column));
+                    Room newRoom = roomFactory.createRoom(String.valueOf("Room (" + row + "," + column + ")"));
                     roomGrid[row][column] = newRoom;
                     rooms.add(newRoom);
                 }

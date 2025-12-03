@@ -17,8 +17,8 @@ public class GameTest {
     CharacterFactory characterFactory = new CharacterFactory();
 
     @Test
-    public void testGame() {
-        Scanner scanner = new Scanner("tello\neat\nmove\nfight\nfight\nfight\nfight\nfight");
+    public void testFight() {
+        Scanner scanner = new Scanner("tello\neat\nmove east\nfight ogre\nfight ogre\nfight ogre\nfight ogre\nfight ogre\nfight ogre");
 
         Player player = new Player("Hero", scanner);
         Maze maze = Maze.getNewBuilder(roomFactory)
@@ -27,6 +27,23 @@ public class GameTest {
                 .add(characterFactory.createCreature("Ogre"))
                 .add(characterFactory.createCreature("Ogre2"))
                 .addArtifacts(artifactFactory.createFoodItems(2))
+                .build();
+        System.out.println(maze.toString());
+        Polymorphia game = new Polymorphia(maze, scanner);
+        game.play();
+        assert game.isOver();
+        assert !game.hasLivingAdventurers() || !game.hasLivingCreatures();
+    }
+
+    @Test
+    public void testMove() {
+        Scanner scanner = new Scanner("tello\nmove north\nmove east\nmove south\nmove west");
+
+        Player player = new Player("Hero", scanner);
+        Maze maze = Maze.getNewBuilder(roomFactory)
+                .createDungeon(2,2)
+                .add(characterFactory.createCreature("Ogre"))
+                .add(player)
                 .build();
         System.out.println(maze.toString());
         Polymorphia game = new Polymorphia(maze, scanner);

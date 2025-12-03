@@ -1,4 +1,5 @@
 package polymorphia.characters;
+import polymorphia.artifacts.IArtifact;
 import polymorphia.strategy.DoNothingStrategy;
 import polymorphia.strategy.PlayStrategy;
 
@@ -16,28 +17,53 @@ public class Player extends Character {
         this.scanner = scanner;
     }
 
-    public String getAction(){
-        System.out.print("Enter your name: ");
-        String name = scanner.nextLine();
-        System.out.println("Hello, " + name + "!");
-        return name;
+    public String[] getAction(){
+        System.out.print("> ");
+        String line = scanner.nextLine().trim();
+        return line.split("\\s+", 2);
     }
 
     @Override
     public void doAction() {
-        String action = getAction();
+        String[] action = getAction();
+        String command = action[0];
+        String argument = action.length > 1 ? action[1] : null;
 
-        if (action.equals("fight")) { //TODO pick creature by name
-            fight(getCurrentLocation().getCreature());
-            System.out.println("You're fight!");
+        if (command.equals("fight")) { //TODO pick creature by name
+            Character creature = getCurrentLocation().getCreature(argument);
+            if (creature != null) {
+                fight(creature);
+            }
+
+            System.out.println("Fought " + argument);
         }
-        if (action.equals("move")){ //TODO add direction
-            move(getCurrentLocation().getRandomNeighbor());
-            System.out.println("You're move!");
+        if (command.equals("move")){ //TODO add direction
+            int cardinality = -1;
+            switch(argument){
+                case "east":
+                    cardinality = 0;
+                    break;
+                case "north":
+                    cardinality = 1;
+                    break;
+                case "south":
+                    cardinality = 2;
+                    break;
+                case "west":
+                    cardinality = 3;
+                    break;
+            }
+            if(cardinality!=-1){
+                move(getCurrentLocation().getNeighbor(cardinality));
+            }
+            System.out.println("Moved " + argument);
         }
-        if (action.equals("eat")) { //TODO pick food by name
-            eat(getCurrentLocation().getFood());
-            System.out.println("You ate!");
+        if (command.equals("eat")) { //TODO pick food by name
+            IArtifact food = getCurrentLocation().getFood(argument);
+            if (food != null) {
+                eat(food);
+            }
+            System.out.println("Ate "  + argument);
         }
         strategy.doAction(this, getCurrentLocation());
     }

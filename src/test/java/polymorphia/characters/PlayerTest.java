@@ -18,10 +18,11 @@ public class PlayerTest {
 
     @Test
     public void testInput() {
-        String input = "Test string";
+        String input = "command arg1";
         Scanner scanner = new Scanner(input);
         Player hero = new Player("Hero", scanner);
-        String action = hero.getAction();
-        assert(action.equals("Test string"));
+        String[] action = hero.getAction();
+        assert(action[0].equals("command"));
+        assert(action[1].equals("arg1"));
     }
 }
