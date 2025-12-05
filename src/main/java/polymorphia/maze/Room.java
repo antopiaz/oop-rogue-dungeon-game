@@ -85,6 +85,13 @@ public class Room {
         return neighbors.stream().toList().get(rand.nextInt(neighbors.size()));
     }
 
+    public Room getNeighbor(int cardinality) {
+        if (neighbors.isEmpty()) {
+            return null;
+        }
+        return neighbors.stream().toList().get(cardinality);
+    }
+
     public void enter(Character character) {
         add(character);
     }
@@ -118,6 +125,14 @@ public class Room {
     public Character getCreature() {
         List<Character> creatures = getLivingCreatures();
         return (creatures.get(rand.nextInt(creatures.size())));
+    }
+
+    public Character getCreature(String name) {
+        List<Character> creatures = getLivingCreatures();
+        return (creatures.stream()
+                .filter(c -> c.getName().equalsIgnoreCase(name))
+                .findFirst()
+                .orElse(null));
     }
 
     public List<IArtifact> getFoodItems() {
@@ -169,10 +184,12 @@ public class Room {
         return food;
     }
 
-    public Optional<IArtifact> getArtifact(ArtifactType artifactType) {
-        return artifacts.stream()
-                .filter(artifact -> artifact.isType(artifactType))
-                .findAny();
+    public IArtifact getFood(String name) {
+        IArtifact food = artifacts.stream()
+                .filter(f -> f.getName().equalsIgnoreCase(name))
+                .findAny().orElse(null);
+        artifacts.remove(food);
+        return food;
     }
 
     public void alterCharacter(Character removedCharacter, Character newCharacter) {

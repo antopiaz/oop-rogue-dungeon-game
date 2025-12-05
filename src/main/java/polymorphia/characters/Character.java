@@ -105,13 +105,16 @@ public abstract class Character {
         logger.info(foe + " chose " + foeFightAction);
 
         boolean won = false;
-        if (myFightAction > foeFightAction || (foeFightAction==2 && myFightAction == 0)) {
+        if ((myFightAction==1 && foeFightAction == 0) || (myFightAction==2 && foeFightAction == 1)|| ( myFightAction == 0 && foeFightAction==2)) {
             won = true;
             foe.loseFightDamage(2.0);
-        } else if (foeFightAction > myFightAction || (myFightAction==2 && foeFightAction == 0)) {
+        } else if ((myFightAction==0 && foeFightAction == 1) || (myFightAction==1 && foeFightAction == 2)|| ( myFightAction == 2 && foeFightAction==0)) {
             loseFightDamage(2.0);
         }
-
+        else if(myFightAction==foeFightAction) {
+            loseFightDamage(1.0);
+            foe.loseFightDamage(1.0);
+        }
         String eventMessage = String.format("%s fought %s and %s!", getName(), foe.getName(), won ? "won" : "lost");
         logger.info(eventMessage);
         EventBus.INSTANCE.broadcast(EventType.FightOccurred, eventMessage);
