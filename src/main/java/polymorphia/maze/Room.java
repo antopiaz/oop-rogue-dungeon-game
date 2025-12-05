@@ -122,6 +122,14 @@ public class Room {
         return artifacts.contains(artifact);
     }
 
+    public boolean hasArtifacts() {
+        return !artifacts.isEmpty();
+    }
+
+    public List<IArtifact> getArtifacts() {
+        return artifacts;
+    }
+
     public Character getCreature() {
         List<Character> creatures = getLivingCreatures();
         return (creatures.get(rand.nextInt(creatures.size())));

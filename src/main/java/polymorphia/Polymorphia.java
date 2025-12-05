@@ -1,19 +1,25 @@
 package polymorphia;
 
+import java.awt.Insets;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
+import javax.swing.JTextArea;
+
 import org.slf4j.Logger;
 
+import polymorphia.artifacts.IArtifact;
 import polymorphia.characters.Character;
 import polymorphia.maze.Maze;
+import polymorphia.maze.Room;
 import polymorphia.observers.EventBus;
 import polymorphia.observers.EventIssuingObservable;
 import polymorphia.observers.EventObserver;
 
 public class Polymorphia implements EventIssuingObservable {
     static Logger logger = org.slf4j.LoggerFactory.getLogger(Polymorphia.class);
+    private JTextArea gameTextArea;
 
     Maze maze;
     Integer turnCount = 0;
@@ -23,6 +29,7 @@ public class Polymorphia implements EventIssuingObservable {
     public Polymorphia(Maze maze, Scanner scanner) {
         this.maze = maze;
         this.scanner = scanner;
+        setUpUI();
     }
 
     // *********** EventIssuingObservable required methods ***********
@@ -46,6 +53,14 @@ public class Polymorphia implements EventIssuingObservable {
         EventBus.INSTANCE.detach(observer);
     }
     // *********** EventIssuingObservable required methods ***********
+
+    private void setUpUI() {
+        gameTextArea = new JTextArea();
+        gameTextArea.setEditable(false);
+        gameTextArea.setLineWrap(true);
+        gameTextArea.setWrapStyleWord(true);
+        gameTextArea.setMargin(new Insets(10, 10, 10, 10));
+    }
 
     @Override
     public String toString() {
@@ -94,6 +109,7 @@ public class Polymorphia implements EventIssuingObservable {
         EventBus.INSTANCE.broadcast(EventType.GameStart, "The game just started");
         while (!isOver()) {
             playTurn();
+            displayUI();
             logger.info(this.toString());
         }
         String eventMessage = String.format("The game ended after %s turns", turnCount);
@@ -109,6 +125,43 @@ public class Polymorphia implements EventIssuingObservable {
             eventDescription = "No team won! Everyone died!\n";
         }
         logger.info(eventDescription);
+    }
+
+    private void displayUI() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("========================================\n");
+        
+        Character player = maze.getLivingAdventurers().getFirst(); // TODO: confirm that player is only adventurer
+        Room currentRoom = player.getCurrentLocation();
+        sb.append(" LOCATION: ").append(currentRoom.getName()).append("\n");
+        sb.append("========================================\n\n");
+        sb.append(currentRoom.toString()).append("\n\n");
+
+        sb.append("--- ARTIFACTS IN ROOM: ---\n");
+        if (currentRoom.hasArtifacts()) {
+            for (IArtifact artifact : currentRoom.getArtifacts()) {
+                sb.append("• ").append(artifact.getName()).append(": ").append(artifact.getStrength()).append("\n");
+            }
+        } else {
+            sb.append("(None)\n");
+        }
+        sb.append("\n");
+
+        sb.append("!!! ENEMIES !!!\n");
+        if (currentRoom.hasLivingCreatures()) {
+            for (Character monster : currentRoom.getLivingCreatures()) {
+                sb.append("× ").append(monster.getName()).append(" (HP: ").append(monster.getHealth()).append(")\n");
+            }
+        } else {
+            sb.append("(Safe)\n");
+        }
+        sb.append("\n");
+
+        // TODO: Add available rooms to move to
+
+        // Update the GUI component
+        gameTextArea.setText(sb.toString());
     }
 
     private String getAdventurerNames() {
