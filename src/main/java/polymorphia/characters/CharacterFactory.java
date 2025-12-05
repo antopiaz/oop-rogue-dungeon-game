@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.stream.IntStream;
 
+import polymorphia.artifacts.Armor;
 import polymorphia.artifacts.IArtifact;
 import polymorphia.strategy.AttackStrategy;
 import polymorphia.strategy.DoNothingStrategy;

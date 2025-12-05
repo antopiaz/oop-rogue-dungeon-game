@@ -158,13 +158,23 @@ public class Room {
                 .anyMatch(artifact -> artifact.isType(ArtifactType.Armor));
     }
 
-    public Optional<IArtifact> getArmor() {
-        Optional<IArtifact> armor = artifacts.stream()
+    public IArtifact getArmor() {
+        IArtifact armor = artifacts.stream()
                 .filter(artifact -> artifact.isType(ArtifactType.Armor))
-                .findAny();
-        armor.ifPresent(artifacts::remove);
+                .findFirst()
+                .get();
+        artifacts.remove(armor);
         return armor;
     }
+
+    public IArtifact getArmor(String name) {
+        IArtifact armor = artifacts.stream()
+                .filter(f -> f.getName().equalsIgnoreCase(name))
+                .findAny().orElse(null);
+        artifacts.remove(armor);
+        return armor;
+    }
+
 
     public boolean hasWeapon() {
         return artifacts.stream()
@@ -203,6 +213,7 @@ public class Room {
     public void alterCharacter(Character removedCharacter, Character newCharacter) {
         characters.remove(removedCharacter);
         characters.add(newCharacter);
-        newCharacter.enterRoom(this);
+        Room room = (removedCharacter.getCurrentLocation());
+        newCharacter.enterRoom(removedCharacter.getCurrentLocation());
     }
 }

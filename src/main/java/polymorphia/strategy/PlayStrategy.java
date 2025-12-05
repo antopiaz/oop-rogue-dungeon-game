@@ -17,10 +17,9 @@ abstract public class PlayStrategy {
     }
 
     static void wearArmor(Character myself, Room currentRoom) {
-        Optional<IArtifact> armor = currentRoom.getArmor();
-        if (armor.isPresent()) {
-            myself.wear(armor.get());
-        }
+        IArtifact armor = currentRoom.getArmor();
+        myself.wear(armor);
+
     }
 
     static void equipWeapon(Character myself, Room currentRoom) {

@@ -22,7 +22,7 @@ public class ArmoredCharacter extends CharacterDecorator {
     public void loseFightDamage(double fightDamage) {
         decoratedCharacter.loseFightDamage(Math.max((fightDamage - armor.getDefenseValue()), 0.0));
     }
-
+    
     @Override
     public double getDamageInflicted(double myRoll, double foeRoll) {
         return decoratedCharacter.getDamageInflicted(myRoll, foeRoll);

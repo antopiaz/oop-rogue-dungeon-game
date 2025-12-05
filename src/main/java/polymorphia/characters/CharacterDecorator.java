@@ -1,5 +1,7 @@
 package polymorphia.characters;
 
+import java.util.Scanner;
+
 public abstract class CharacterDecorator extends Character {
     protected Character decoratedCharacter;
 
@@ -10,5 +12,14 @@ public abstract class CharacterDecorator extends Character {
 
     @Override
     public abstract String getName();
+
+    public String[] getAction(){
+        return ((Player) decoratedCharacter).getAction();
+    }
+
+    public void doAction(){
+        decoratedCharacter.doAction();
+    }
+
 
 }

@@ -7,7 +7,7 @@ public class WeaponizedCharacter extends CharacterDecorator {
     // Instead of fight, move, eat, change specific helper methods
     // to avoid repeating code.
     private final IArtifact weapon;
-
+    
     public WeaponizedCharacter(Character character, IArtifact weapon) {
         super(character);
         this.weapon = weapon;

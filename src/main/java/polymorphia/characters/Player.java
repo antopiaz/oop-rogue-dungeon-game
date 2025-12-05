@@ -13,9 +13,13 @@ public class Player extends Character {
     private final Scanner scanner;
 
 
-    public Player(String name, Scanner scanner) {
-        super(name, DEFAULT_HEALTH, new HumanStrategy(scanner));
+    public Player(String name, Scanner scanner, PlayStrategy strategy) {
+        super(name, DEFAULT_HEALTH, strategy);
         this.scanner = scanner;
+    }
+
+    public Scanner getScanner() {
+        return scanner;
     }
 
     public String[] getAction(){
@@ -74,7 +78,15 @@ public class Player extends Character {
             }
             System.out.println("Ate "  + argument);
         }
-        strategy.doAction(this, getCurrentLocation());
+
+        if (command.equals("wear")) {
+            IArtifact armor = getCurrentLocation().getArmor(argument);
+            if (armor != null) {
+                wear(armor);
+
+            }
+            System.out.println("Equipped "  + argument);
+        }
     }
 
 
