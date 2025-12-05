@@ -96,9 +96,7 @@ public abstract class Character {
         return false;
     }
 
-    public Boolean fight(Character foe) {
-        Integer myFightAction = getFightAction(); //TODO
-        Integer foeFightAction = foe.getFightAction();
+    public Boolean fight(Character foe, int myFightAction, int foeFightAction) {
         logger.info(getName() + " is fighting " + foe);
 
         logger.info(getName() + " chose " + myFightAction);
@@ -122,8 +120,9 @@ public abstract class Character {
     }
 
     public int getFightAction() {
-        return random.nextInt(3);
+        return strategy.getFightAction(this);
     }
+
 
     public void doAction() {
         strategy.doAction(this, getCurrentLocation());

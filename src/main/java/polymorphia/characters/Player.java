@@ -1,6 +1,7 @@
 package polymorphia.characters;
 import polymorphia.artifacts.IArtifact;
 import polymorphia.strategy.DoNothingStrategy;
+import polymorphia.strategy.HumanStrategy;
 import polymorphia.strategy.PlayStrategy;
 
 import java.util.Scanner;
@@ -13,7 +14,7 @@ public class Player extends Character {
 
 
     public Player(String name, Scanner scanner) {
-        super(name, DEFAULT_HEALTH, new DoNothingStrategy());
+        super(name, DEFAULT_HEALTH, new HumanStrategy(scanner));
         this.scanner = scanner;
     }
 
@@ -23,6 +24,7 @@ public class Player extends Character {
         return line.split("\\s+", 2);
     }
 
+
     @Override
     public void doAction() {
         String[] action = getAction();
@@ -31,8 +33,14 @@ public class Player extends Character {
 
         if (command.equals("fight")) { //TODO pick creature by name
             Character creature = getCurrentLocation().getCreature(argument);
+
             if (creature != null) {
-                fight(creature);
+                int fightAction = getFightAction();
+                int foeFightAction = creature.getFightAction();
+
+                fight(creature, fightAction, foeFightAction);
+                System.out.println("chose: " + fightAction);
+
             }
 
             System.out.println("Fought " + argument);
@@ -56,6 +64,7 @@ public class Player extends Character {
             if(cardinality!=-1){
                 move(getCurrentLocation().getNeighbor(cardinality));
             }
+            System.out.println();
             System.out.println("Moved " + argument);
         }
         if (command.equals("eat")) { //TODO pick food by name

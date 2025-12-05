@@ -7,9 +7,8 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 import polymorphia.artifacts.IArtifact;
-import polymorphia.strategy.DemonStrategy;
+import polymorphia.strategy.AttackStrategy;
 import polymorphia.strategy.DoNothingStrategy;
-import polymorphia.strategy.FighterStrategy;
 
 
 public class CharacterFactory {
@@ -31,20 +30,7 @@ public class CharacterFactory {
         NAMES.put("Demon", DEMON_NAMES);
     }
 
-    public static final Double DEFAULT_FIGHTER_INITIAL_HEALTH = 10.0;
-    static final Double DEFAULT_GLUTTON_INITIAL_HEALTH = 4.0;
-    static final Double DEFAULT_COWARD_INITIAL_HEALTH = 5.0;
     static final Double DEFAULT_CREATURE_INITIAL_HEALTH = 5.0;
-    static final Double DEFAULT_DEMON_INITIAL_HEALTH = 15.0;
-
-
-    public Character createKnight(String name) {
-        return createKnight(name, DEFAULT_FIGHTER_INITIAL_HEALTH);
-    }
-
-    public Character createKnight(String name, Double initialHealth) {
-        return new Adventurer(name, initialHealth, new FighterStrategy());
-    }
 
     public Character createCreature(String name) {
         return createCreature(name, DEFAULT_CREATURE_INITIAL_HEALTH);
@@ -54,8 +40,8 @@ public class CharacterFactory {
         return new Creature(name, initialHealth, new DoNothingStrategy());
     }
 
-    public Character createDemon(String name) {
-        return new Creature(name, DEFAULT_DEMON_INITIAL_HEALTH, new DemonStrategy());
+    public Character createAttacker(String name) {
+        return new Creature(name, DEFAULT_CREATURE_INITIAL_HEALTH, new AttackStrategy());
     }
 
     public static Character createArmoredCharacter(Character decoratedCharacter, IArtifact armor) {
@@ -66,34 +52,15 @@ public class CharacterFactory {
         return new WeaponizedCharacter(decoratedCharacter, weapon);
     }
 
-    public List<Character> createKnights(int numberOfCharacters) {
-        return IntStream.range(0, numberOfCharacters)
-                .mapToObj(unused -> createKnight())
-                .toList();
-    }
-
     public List<Character> createCreatures(int numberOfCharacters) {
         return IntStream.range(0, numberOfCharacters)
                 .mapToObj(unused -> createCreature())
                 .toList();
     }
 
-    public List<Character> createDemons(int numberOfCharacters) {
-        return IntStream.range(0, numberOfCharacters)
-                .mapToObj(unused -> createDemon())
-                .toList();
-    }
-
-    public Character createKnight() {
-        return createKnight(getRandomName("Knight"));
-    }
 
     private Character createCreature() {
         return createCreature(getRandomName("Creature"));
-    }
-
-    private Character createDemon() {
-        return createDemon(getRandomName("Demon"));
     }
 
     private String getRandomName(String characterType) {
