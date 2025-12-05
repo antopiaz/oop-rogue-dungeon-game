@@ -81,8 +81,6 @@ public class Maze {
         private final Random rand = new Random();
 
         final Maze maze = new Maze();
-        Map<String, Room> roomMap = new HashMap<>();
-        private Boolean distributeRandomly = true;
         private int currentRoomIndex = 0;
         private final RoomFactory roomFactory;
 
@@ -91,20 +89,12 @@ public class Maze {
         }
 
         private Room nextRoom() {
-            if (distributeRandomly) {
-                return getRandomRoom();
-            }
             return maze.getRooms().get(currentRoomIndex++ % maze.getRooms().size());
-        }
-
-        private Room getRandomRoom() {
-            return maze.rooms.get(rand.nextInt(maze.rooms.size()));
         }
 
         public Builder createGridOfRooms(int rows, int columns) {
             Room[][] roomGrid = new Room[rows][columns];
             List<Room> rooms = new ArrayList<>();
-            // Notice -- don't use i and j. Use row and column -- they are better
             for (int row = 0; row < rows; row++) {
                 for (int column = 0; column < columns; column++) {
                     Room newRoom = roomFactory.createRoom(String.valueOf("Room (" + row + "," + column + ")"));
@@ -149,43 +139,25 @@ public class Maze {
             }
             return this;
         }
+        public Builder addArtifact(IArtifact artifact) {
+            nextRoom().add(artifact);
+            return this;
+        }
+
 
         public Maze build() {
             assert maze.size() > 0;
-            for (Room room : maze.rooms) {
-                if (room.numberOfNeighbors() == 0) {
-                    logger.warn("Room {} has no neighbors. Connecting it to another room.", room.getName());
-                    room.addNeighbor(nextRoom());
-                }
-            }
-            if (!maze.hasLivingAdventurers()) {
-                logger.error("No adventurers created. Terminating game.");
-                throw new IllegalStateException("No adventurers created. Terminating game.");
-            }
             return maze;
-        }
-
-        public Builder addToRoom(String roomName, Character character) {
-            getRoom(roomName).add(character);
-            return this;
-        }
-
-        public Builder addToRoom(String roomName, IArtifact artifact) {
-            getRoom(roomName).add(artifact);
-            return this;
-        }
-
-        public Room getRoom(String roomName) {
-            return roomMap.get(roomName);
-        }
-
-        public Builder distributeRandomly() {
-            distributeRandomly = true;
-            return this;
         }
 
         public Builder createDungeon(int rows, int columns) {
             createGridOfRooms(rows, columns);
+            return this;
+        }
+
+        public Builder addCharacterToStart(Character character) {
+            maze.getRooms().get(0).add(character);
+
             return this;
         }
     }
