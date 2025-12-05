@@ -1,11 +1,8 @@
 package polymorphia;
 
-import java.awt.Insets;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
-
-import javax.swing.JTextArea;
 
 import org.slf4j.Logger;
 
@@ -19,7 +16,6 @@ import polymorphia.observers.EventObserver;
 
 public class Polymorphia implements EventIssuingObservable {
     static Logger logger = org.slf4j.LoggerFactory.getLogger(Polymorphia.class);
-    private JTextArea gameTextArea;
 
     Maze maze;
     Integer turnCount = 0;
@@ -29,7 +25,6 @@ public class Polymorphia implements EventIssuingObservable {
     public Polymorphia(Maze maze, Scanner scanner) {
         this.maze = maze;
         this.scanner = scanner;
-        setUpUI();
     }
 
     // *********** EventIssuingObservable required methods ***********
@@ -53,14 +48,6 @@ public class Polymorphia implements EventIssuingObservable {
         EventBus.INSTANCE.detach(observer);
     }
     // *********** EventIssuingObservable required methods ***********
-
-    private void setUpUI() {
-        gameTextArea = new JTextArea();
-        gameTextArea.setEditable(false);
-        gameTextArea.setLineWrap(true);
-        gameTextArea.setWrapStyleWord(true);
-        gameTextArea.setMargin(new Insets(10, 10, 10, 10));
-    }
 
     @Override
     public String toString() {
@@ -130,7 +117,30 @@ public class Polymorphia implements EventIssuingObservable {
     private void displayUI() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("========================================\n");
+        sb.append("_____________________________________________________________________________\n");
+        sb.append("|                                                                           |\n");
+        sb.append("|                                                       o   o               |\n");
+        sb.append("|                                                       |\\O/|               |\n");
+        sb.append("|                                                        \\Y/                |\n");
+        sb.append("|                                                         /_\\               |\n");
+        sb.append("|                                                         _W_               |\n");
+        sb.append("|                                                                           |\n");
+        sb.append("|                               __________                                    |\n");
+        sb.append("|                              /\\____;;___\\                                 |\n");
+        sb.append("|                             | /         /                                 |\n");
+        sb.append("|                             `. ())oo() .                                  |\n");
+        sb.append("|                              |\\(%()*^^()^\\                                |\n");
+        sb.append("|                              | |-%-------|                                |\n");
+        sb.append("|                              \\ | %  ))   |                                |\n");
+        sb.append("|                                \\|%________|                               |\n");
+        sb.append("|                                                                           |\n");
+        sb.append("|                                                                           |\n");
+        sb.append("|         `o^                                                               |\n");
+        sb.append("|      ^\\/0\\_+---                                                           |\n");
+        sb.append("|         /O\\                                                               |\n");
+        sb.append("|        _| /_                                                              |\n");
+        sb.append("|                                                                           |\n");
+        sb.append("_____________________________________________________________________________\n");
         
         Character player = maze.getLivingAdventurers().getFirst(); // TODO: confirm that player is only adventurer
         Room currentRoom = player.getCurrentLocation();
@@ -160,8 +170,8 @@ public class Polymorphia implements EventIssuingObservable {
 
         // TODO: Add available rooms to move to
 
-        // Update the GUI component
-        gameTextArea.setText(sb.toString());
+        // Print out string representation
+        logger.info(sb.toString());
     }
 
     private String getAdventurerNames() {
