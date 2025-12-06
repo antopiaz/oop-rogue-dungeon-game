@@ -28,6 +28,7 @@ TODO: Instructions on how to get a local copy up and running.
 * ASCII UI that changes from observers any time game changes
 * Fighting = rock paper scissors (strike grapple lunge)
 * Run via exe file or somthing similar
+* Map that shows entire dungeon
 
 ---
 

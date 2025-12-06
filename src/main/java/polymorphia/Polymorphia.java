@@ -117,24 +117,49 @@ public class Polymorphia implements EventIssuingObservable {
     private void displayUI() {
         StringBuilder sb = new StringBuilder();
 
+        Character player = maze.getLivingAdventurers().getFirst(); // TODO: confirm that player is only adventurer
+        Room currentRoom = player.getCurrentLocation();
+
         sb.append("_____________________________________________________________________________\n");
         sb.append("|                                                                           |\n");
-        sb.append("|                                                       o   o               |\n");
-        sb.append("|                                                       |\\O/|               |\n");
-        sb.append("|                                                        \\Y/                |\n");
-        sb.append("|                                                         /_\\               |\n");
-        sb.append("|                                                         _W_               |\n");
+        if (currentRoom.hasLivingCreatures()) {
+            sb.append("|                                                       o   o               |\n");
+            sb.append("|                                                       |\\O/|               |\n");
+            sb.append("|                                                        \\Y/                |\n");
+            sb.append("|                                                         /_\\               |\n");
+            sb.append("|                                                         _W_               |\n");
+        }
+        else {
+            sb.append("|                                                                           |\n");
+            sb.append("|                                                                           |\n");
+            sb.append("|                                                                           |\n");
+            sb.append("|                                                                           |\n");
+            sb.append("|                                                                           |\n");
+        }
         sb.append("|                                                                           |\n");
-        sb.append("|                               __________                                    |\n");
-        sb.append("|                              /\\____;;___\\                                 |\n");
-        sb.append("|                             | /         /                                 |\n");
-        sb.append("|                             `. ())oo() .                                  |\n");
-        sb.append("|                              |\\(%()*^^()^\\                                |\n");
-        sb.append("|                              | |-%-------|                                |\n");
-        sb.append("|                              \\ | %  ))   |                                |\n");
-        sb.append("|                                \\|%________|                               |\n");
+
+        if (currentRoom.hasArtifacts()) {
+            sb.append("|                               __________                                    |\n");
+            sb.append("|                              /\\____;;___\\                                 |\n");
+            sb.append("|                             | /         /                                 |\n");
+            sb.append("|                             `. ())oo() .                                  |\n");
+            sb.append("|                              |\\(%()*^^()^\\                                |\n");
+            sb.append("|                              | |-%-------|                                |\n");
+            sb.append("|                              \\ | %  ))   |                                |\n");
+            sb.append("|                                \\|%________|                               |\n");
+        }
+        else {
+            sb.append("|                                                                           |\n");
+            sb.append("|                                                                           |\n");
+            sb.append("|                                                                           |\n");
+            sb.append("|                                                                           |\n");
+            sb.append("|                                                                           |\n");
+            sb.append("|                                                                           |\n");
+            sb.append("|                                                                           |\n");
+            sb.append("|                                                                           |\n");
+        }
         sb.append("|                                                                           |\n");
-        sb.append("|                                                                           |\n");
+
         sb.append("|         `o^                                                               |\n");
         sb.append("|      ^\\/0\\_+---                                                           |\n");
         sb.append("|         /O\\                                                               |\n");
@@ -142,8 +167,6 @@ public class Polymorphia implements EventIssuingObservable {
         sb.append("|                                                                           |\n");
         sb.append("_____________________________________________________________________________\n");
         
-        Character player = maze.getLivingAdventurers().getFirst(); // TODO: confirm that player is only adventurer
-        Room currentRoom = player.getCurrentLocation();
         sb.append(" LOCATION: ").append(currentRoom.getName()).append("\n");
         sb.append("========================================\n\n");
         sb.append(currentRoom.toString()).append("\n\n");
@@ -167,8 +190,6 @@ public class Polymorphia implements EventIssuingObservable {
             sb.append("(Safe)\n");
         }
         sb.append("\n");
-
-        // TODO: Add available rooms to move to
 
         // Print out string representation
         logger.info(sb.toString());
