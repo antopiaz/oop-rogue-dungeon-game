@@ -18,9 +18,9 @@ TODO: Instructions on how to get a local copy up and running.
 * Builder for dungeon and rooms
 * Decorator for equipping items
 * Strategy for creature's game tree
-* Singleton for player
+* Facade for game setup
+* Singleton for player?
 * Observer for UI and display?
-* Facade for user input?
 
 ## Ideas for Game Features
 
