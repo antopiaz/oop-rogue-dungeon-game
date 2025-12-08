@@ -114,22 +114,24 @@ public class Polymorphia implements EventIssuingObservable {
         logger.info(eventDescription);
     }
 
-    private void displayUI() {
+    public void displayUI() {
         StringBuilder sb = new StringBuilder();
 
         Character player = maze.getLivingAdventurers().getFirst(); // TODO: confirm that player is only adventurer
         Room currentRoom = player.getCurrentLocation();
 
         sb.append("_____________________________________________________________________________\n");
-        sb.append("|                                                                           |\n");
+        
         if (currentRoom.hasLivingCreatures()) {
+            sb.append("|                                                      (enemy)              |\n");
             sb.append("|                                                       o   o               |\n");
             sb.append("|                                                       |\\O/|               |\n");
             sb.append("|                                                        \\Y/                |\n");
-            sb.append("|                                                         /_\\               |\n");
-            sb.append("|                                                         _W_               |\n");
+            sb.append("|                                                        /_\\                |\n");
+            sb.append("|                                                        _W_                |\n");
         }
         else {
+            sb.append("|                                                                           |\n");
             sb.append("|                                                                           |\n");
             sb.append("|                                                                           |\n");
             sb.append("|                                                                           |\n");
@@ -139,14 +141,14 @@ public class Polymorphia implements EventIssuingObservable {
         sb.append("|                                                                           |\n");
 
         if (currentRoom.hasArtifacts()) {
-            sb.append("|                               __________                                    |\n");
+            sb.append("|                               __________                                  |\n");
             sb.append("|                              /\\____;;___\\                                 |\n");
             sb.append("|                             | /         /                                 |\n");
             sb.append("|                             `. ())oo() .                                  |\n");
             sb.append("|                              |\\(%()*^^()^\\                                |\n");
             sb.append("|                              | |-%-------|                                |\n");
             sb.append("|                              \\ | %  ))   |                                |\n");
-            sb.append("|                                \\|%________|                               |\n");
+            sb.append("|                               \\|%________|                                |\n");
         }
         else {
             sb.append("|                                                                           |\n");
@@ -158,33 +160,31 @@ public class Polymorphia implements EventIssuingObservable {
             sb.append("|                                                                           |\n");
             sb.append("|                                                                           |\n");
         }
-        sb.append("|                                                                           |\n");
-
+        sb.append("|        (you)                                                              |\n");
         sb.append("|         `o^                                                               |\n");
-        sb.append("|      ^\\/0\\_+---                                                           |\n");
+        sb.append("|       ^\\/0\\_+---                                                          |\n");
         sb.append("|         /O\\                                                               |\n");
         sb.append("|        _| /_                                                              |\n");
         sb.append("|                                                                           |\n");
         sb.append("_____________________________________________________________________________\n");
         
-        sb.append(" LOCATION: ").append(currentRoom.getName()).append("\n");
+        sb.append(" LOCATION: \n").append(currentRoom.toString()).append("\n\n");
         sb.append("========================================\n\n");
-        sb.append(currentRoom.toString()).append("\n\n");
 
         sb.append("--- ARTIFACTS IN ROOM: ---\n");
         if (currentRoom.hasArtifacts()) {
             for (IArtifact artifact : currentRoom.getArtifacts()) {
-                sb.append("• ").append(artifact.getName()).append(": ").append(artifact.getStrength()).append("\n");
+                sb.append("o ").append(artifact.getName()).append(": ").append(artifact.getStrength()).append("\n");
             }
         } else {
             sb.append("(None)\n");
         }
         sb.append("\n");
 
-        sb.append("!!! ENEMIES !!!\n");
+        sb.append("--- ENEMIES IN ROOM: ---\n");
         if (currentRoom.hasLivingCreatures()) {
             for (Character monster : currentRoom.getLivingCreatures()) {
-                sb.append("× ").append(monster.getName()).append(" (HP: ").append(monster.getHealth()).append(")\n");
+                sb.append("x ").append(monster.getName()).append(" (HP: ").append(monster.getHealth()).append(")\n");
             }
         } else {
             sb.append("(Safe)\n");
@@ -192,7 +192,7 @@ public class Polymorphia implements EventIssuingObservable {
         sb.append("\n");
 
         // Print out string representation
-        logger.info(sb.toString());
+        System.out.println(sb.toString());
     }
 
     private String getAdventurerNames() {
