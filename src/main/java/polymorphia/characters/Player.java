@@ -1,7 +1,6 @@
 package polymorphia.characters;
+import polymorphia.DirectionType;
 import polymorphia.artifacts.IArtifact;
-import polymorphia.strategy.DoNothingStrategy;
-import polymorphia.strategy.HumanStrategy;
 import polymorphia.strategy.PlayStrategy;
 
 import java.util.Scanner;
@@ -16,10 +15,6 @@ public class Player extends Character {
     public Player(String name, Scanner scanner, PlayStrategy strategy) {
         super(name, DEFAULT_HEALTH, strategy);
         this.scanner = scanner;
-    }
-
-    public Scanner getScanner() {
-        return scanner;
     }
 
     public String[] getAction(){
@@ -50,23 +45,23 @@ public class Player extends Character {
             System.out.println("Fought " + argument);
         }
         if (command.equals("move")){ //TODO add direction
-            int cardinality = -1;
+            DirectionType cardinality = null;
             switch(argument){
                 case "east":
-                    cardinality = 0;
+                    cardinality = DirectionType.EAST;
                     break;
                 case "north":
-                    cardinality = 1;
+                    cardinality = DirectionType.NORTH;
                     break;
                 case "south":
-                    cardinality = 2;
+                    cardinality = DirectionType.SOUTH;
                     break;
                 case "west":
-                    cardinality = 3;
+                    cardinality = DirectionType.WEST;
                     break;
             }
-            if(cardinality!=-1){
-                move(getCurrentLocation().getNeighbor(cardinality));
+            if(cardinality!=null){
+                move(cardinality);
             }
             System.out.println();
             System.out.println("Moved " + argument);
@@ -84,6 +79,14 @@ public class Player extends Character {
             if (armor != null) {
                 wear(armor);
 
+            }
+            System.out.println("Equipped "  + argument);
+        }
+
+        if(command.equals("equip")){
+            IArtifact weapon = getCurrentLocation().getWeapon(argument);
+            if(weapon != null){
+                equip(weapon);
             }
             System.out.println("Equipped "  + argument);
         }

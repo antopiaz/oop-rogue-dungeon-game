@@ -2,11 +2,18 @@ package polymorphia.strategy;
 
 import polymorphia.maze.Room;
 import polymorphia.characters.Character;
+import java.util.Random;
 
 public class DefensiveStrategy extends PlayStrategy {
     @Override
     public int getFightAction(Character character) {
-        return 0;
+        double randomNumber = Math.random();
+        if (randomNumber < 0.5) {
+            return 1;
+        }
+        else{
+            return 2;
+        }
     }
 
     @Override

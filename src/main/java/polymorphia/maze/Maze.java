@@ -9,6 +9,7 @@ import java.util.stream.IntStream;
 
 import org.slf4j.Logger;
 
+import polymorphia.DirectionType;
 import polymorphia.artifacts.IArtifact;
 import polymorphia.characters.Character;
 
@@ -69,17 +70,7 @@ public class Maze {
         return new Builder(roomFactory);
     }
 
-    public Room getRoom(String roomName) {
-        return rooms.stream()
-                .filter(room -> room.getName().equals(roomName))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("No room with name " + roomName));
-    }
-
     public static class Builder {
-        static Logger logger = org.slf4j.LoggerFactory.getLogger(Builder.class);
-        private final Random rand = new Random();
-
         final Maze maze = new Maze();
         private int currentRoomIndex = 0;
         private final RoomFactory roomFactory;
@@ -107,14 +98,13 @@ public class Maze {
             for (int row = 0; row < rows; row++) {
                 for (int column = 0; column < columns; column++) {
                     Room currentRoom = roomGrid[row][column];
-                    Room neighbor;
                     if (row > 0) {
-                        neighbor = roomGrid[row - 1][column];
-                        currentRoom.addNeighbor(neighbor);
+                        currentRoom.addNeighbor(DirectionType.SOUTH, roomGrid[row-1][column]);
+                        roomGrid[row-1][column].addNeighbor(DirectionType.NORTH, currentRoom);
                     }
                     if (column > 0) {
-                        neighbor = roomGrid[row][column - 1];
-                        currentRoom.addNeighbor(neighbor);
+                        currentRoom.addNeighbor(DirectionType.WEST, roomGrid[row][column-1]);
+                        roomGrid[row][column-1].addNeighbor(DirectionType.EAST, currentRoom);
                     }
                 }
             }
@@ -156,6 +146,7 @@ public class Maze {
         }
 
         public Builder addCharacterToStart(Character character) {
+            System.out.println("STARET ROOM " + maze.getRooms().get(0).getName());
             maze.getRooms().get(0).add(character);
 
             return this;

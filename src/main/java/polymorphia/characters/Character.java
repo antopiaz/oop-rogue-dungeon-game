@@ -2,6 +2,7 @@ package polymorphia.characters;
 
 import org.slf4j.Logger;
 
+import polymorphia.DirectionType;
 import polymorphia.EventType;
 import polymorphia.artifacts.IArtifact;
 import polymorphia.maze.Room;
@@ -128,9 +129,10 @@ public abstract class Character {
         strategy.doAction(this, getCurrentLocation());
     }
 
-    public void move(Room destinationRoom) {
-        assert getCurrentLocation().hasNeighbor(destinationRoom); // Causes assertion error in Cucumuber tests
-        String eventMessage = String.format("%s moved from %s to %s", getName(), destinationRoom.getName(), getCurrentLocation().getName());
+    public void move(DirectionType direction) {
+        assert (getCurrentLocation().hasNeighbor(direction));
+        Room destinationRoom = getCurrentLocation().getNeighbor(direction);
+        String eventMessage = String.format("%s moved %s from %s to %s", getName(), direction, getCurrentLocation().getName(), destinationRoom.getName());
         logger.info(eventMessage);
         EventBus.INSTANCE.broadcast(EventType.MovedRooms, eventMessage);
         destinationRoom.enter(this);

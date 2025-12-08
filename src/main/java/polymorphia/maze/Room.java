@@ -1,10 +1,8 @@
 package polymorphia.maze;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
+import polymorphia.DirectionType;
 import polymorphia.artifacts.ArtifactType;
 import polymorphia.artifacts.IArtifact;
 import polymorphia.characters.Character;
@@ -13,7 +11,7 @@ public class Room {
     static private final Random rand = new Random();
 
     private final String name;
-    private final List<Room> neighbors = new ArrayList<>();
+    private final Map<DirectionType, Room> neighbors = new HashMap<>();
     private final List<Character> characters = new ArrayList<>();
     private final List<IArtifact> artifacts = new ArrayList<>();
 
@@ -43,14 +41,11 @@ public class Room {
         return characterStrings;
     }
 
-    void addNeighbor(Room neighbor) {
-        if (this != neighbor) {
-            this.neighbors.add(neighbor);
+    public void addNeighbor(DirectionType direction, Room neighbor) {
+        if(this != neighbor){
+            neighbors.put(direction, neighbor);
+            neighbor.neighbors.put(direction.opposite(), this);
         }
-        if (!neighbor.neighbors.contains(this)) {
-            neighbor.neighbors.add(this);
-        }
-
     }
 
     @Override
@@ -82,14 +77,14 @@ public class Room {
         if (neighbors.isEmpty()) {
             return null;
         }
-        return neighbors.stream().toList().get(rand.nextInt(neighbors.size()));
+        return null; //TODO neighbors.stream().toList().get(rand.nextInt(neighbors.size()));
     }
 
-    public Room getNeighbor(int cardinality) {
-        if (neighbors.isEmpty()) {
-            return null;
+    public Room getNeighbor(DirectionType direction) {
+        if (neighbors.containsKey(direction)) {
+            return neighbors.get(direction);
         }
-        return neighbors.stream().toList().get(cardinality);
+        return null;
     }
 
     public void enter(Character character) {
@@ -102,16 +97,8 @@ public class Room {
                 .toList();
     }
 
-    public boolean hasNeighbor(Room neighbor) {
-        return neighbors.contains(neighbor);
-    }
-
-    public int numberOfNeighbors() {
-        return neighbors.size();
-    }
-
-    public boolean hasNeighbors() {
-        return !neighbors.isEmpty();
+    public boolean hasNeighbor(DirectionType direction) {
+        return neighbors.containsKey(direction);
     }
 
     public boolean contains(Character character) {
@@ -181,11 +168,11 @@ public class Room {
                 .anyMatch(artifact -> artifact.isType(ArtifactType.Weapon));
     }
 
-    public Optional<IArtifact> getWeapon() {
-        Optional<IArtifact> weapon = artifacts.stream()
-                .filter(artifact -> artifact.isType(ArtifactType.Weapon))
-                .findAny();
-        weapon.ifPresent(artifacts::remove);
+    public IArtifact getWeapon(String name) {
+        IArtifact weapon = artifacts.stream()
+                .filter(w -> w.getName().equalsIgnoreCase(name))
+                .findAny().orElse(null);
+        artifacts.remove(weapon);
         return weapon;
     }
 
