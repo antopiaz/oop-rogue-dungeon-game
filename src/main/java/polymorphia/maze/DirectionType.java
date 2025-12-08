@@ -1,4 +1,4 @@
-package polymorphia;
+package polymorphia.maze;
 
 public enum DirectionType {
     NORTH, SOUTH, EAST, WEST;

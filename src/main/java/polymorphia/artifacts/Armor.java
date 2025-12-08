@@ -1,16 +1,22 @@
 package polymorphia.artifacts;
 
 public class Armor extends Artifact {
-    public static double DEFAULT_HEALTH_VALUE = 0.0;
+    protected double armorValue;
 
-    public Armor(String name, double strength, double movingCost) {
-        super(ArtifactType.Armor, name, DEFAULT_HEALTH_VALUE, strength, movingCost);
+    public Armor(String name, double armorValue) {
+        super(ArtifactType.Armor, name, armorValue);
+        this.armorValue = armorValue;
     }
 
     @Override
     public String toString() {
-        String formattedStrength = String.format("%.2f", getDefenseValue());
-        return getName() + " armor(strength:" + formattedStrength + ", movingCost:" + getMovingCost() + ")";
+        String formattedStrength = String.format("%.2f", getValue());
+        return getName() + " armor(strength:" + formattedStrength  + ")";
+    }
+
+    @Override
+    public double getValue(){
+        return armorValue;
     }
 
 }

@@ -74,11 +74,11 @@ public class GameTest {
 
     @Test
     public void testArmor() {
-        Scanner scanner = new Scanner("tello\nfight attacker 1 \n2\nwear armor\nfight attacker 1 \n2\nfight attacker 1 \n2\nfight attacker 1 \n2");
+        Scanner scanner = new Scanner("tello\nwear platemail\nfight attacker 1 \n2\nfight attacker 1 \n2\nfight attacker 1 \n2\nfight attacker 1 \n2");
 
         Player player = new Player("Hero", scanner, new HumanStrategy(scanner));
         IArtifact food = artifactFactory.createFood("apple");
-        IArtifact armor = artifactFactory.createArmor("armor");
+        IArtifact armor = artifactFactory.createArmor("platemail",1.0);
         Maze maze = Maze.getNewBuilder(roomFactory)
                 .createDungeon(1,1)
                 .add(player)
@@ -92,5 +92,27 @@ public class GameTest {
         assert game.isOver();
         assert !game.hasLivingAdventurers() || !game.hasLivingCreatures();
     }
+
+    @Test
+    public void testWeapons() {
+        Scanner scanner = new Scanner("tello\nequip sword\nfight attacker 1 \n1\nfight attacker 1 \n1\nfight attacker 1 \n1\nfight attacker 1 \n1");
+
+        Player player = new Player("Hero", scanner, new HumanStrategy(scanner));
+        IArtifact food = artifactFactory.createFood("apple");
+        IArtifact weapon = artifactFactory.createWeapon("sword", 1.0);
+        Maze maze = Maze.getNewBuilder(roomFactory)
+                .createDungeon(1,1)
+                .add(player)
+                .add(characterFactory.createAttacker("attacker 1"))
+                .addArtifact(food)
+                .addArtifact(weapon)
+                .build();
+        System.out.println(maze.toString());
+        Polymorphia game = new Polymorphia(maze, scanner);
+        game.play();
+        assert game.isOver();
+        assert !game.hasLivingAdventurers() || !game.hasLivingCreatures();
+    }
+
 
 }

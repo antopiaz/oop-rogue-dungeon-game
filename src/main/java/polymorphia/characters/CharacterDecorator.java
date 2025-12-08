@@ -13,8 +13,9 @@ public abstract class CharacterDecorator extends Character {
     @Override
     public abstract String getName();
 
-    public String[] getAction(){
-        return ((Player) decoratedCharacter).getAction();
+    @Override
+    public Double getHealth(){
+        return decoratedCharacter.getHealth();
     }
 
     public void doAction(){

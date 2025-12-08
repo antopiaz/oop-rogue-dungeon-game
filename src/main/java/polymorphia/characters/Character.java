@@ -2,11 +2,9 @@ package polymorphia.characters;
 
 import org.slf4j.Logger;
 
-import polymorphia.DirectionType;
-import polymorphia.EventType;
+import polymorphia.maze.DirectionType;
 import polymorphia.artifacts.IArtifact;
 import polymorphia.maze.Room;
-import polymorphia.observers.EventBus;
 import polymorphia.strategy.PlayStrategy;
 import java.util.Random;
 
@@ -56,7 +54,6 @@ public abstract class Character {
         if (health <= 0) {
             String eventMessage = name + " just died!";
             logger.info(eventMessage);
-            EventBus.INSTANCE.broadcast(EventType.Death, eventMessage);
         }
     }
 
@@ -80,14 +77,9 @@ public abstract class Character {
         loseHealth(fightDamage);
     }
 
-    public double getDamageInflicted(double myRoll, double foeRoll) {
-        return myRoll - foeRoll;
+    public double dealFightDamage(double baseDamage) {
+        return baseDamage;
     }
-
-    public double getDamageReceived(double myRoll, double foeRoll) {
-        return foeRoll - myRoll;
-    }
-
 
     public Boolean isAdventurer() {
         return true;
@@ -97,26 +89,27 @@ public abstract class Character {
         return false;
     }
 
-    public Boolean fight(Character foe, int myFightAction, int foeFightAction) {
-        logger.info(getName() + " is fighting " + foe);
+    public Boolean fight(Character self, Character foe, int myFightAction, int foeFightAction) {
+        logger.info(self.getName() + " is fighting " + foe);
 
-        logger.info(getName() + " chose " + myFightAction);
+        logger.info(self.getName() + " chose " + myFightAction);
         logger.info(foe + " chose " + foeFightAction);
-
+        double finalDamage;
         boolean won = false;
         if ((myFightAction==1 && foeFightAction == 0) || (myFightAction==2 && foeFightAction == 1)|| ( myFightAction == 0 && foeFightAction==2)) {
             won = true;
-            foe.loseFightDamage(2.0);
+            finalDamage = self.dealFightDamage(3.0);
+            foe.loseFightDamage(finalDamage);
         } else if ((myFightAction==0 && foeFightAction == 1) || (myFightAction==1 && foeFightAction == 2)|| ( myFightAction == 2 && foeFightAction==0)) {
-            loseFightDamage(2.0);
+            finalDamage = foe.dealFightDamage(3.0);
+            self.loseFightDamage(finalDamage);
         }
         else if(myFightAction==foeFightAction) {
-            loseFightDamage(1.0);
-            foe.loseFightDamage(1.0);
+            self.loseFightDamage(1.5);
+            foe.loseFightDamage(1.5);
         }
         String eventMessage = String.format("%s fought %s and %s!", getName(), foe.getName(), won ? "won" : "lost");
         logger.info(eventMessage);
-        EventBus.INSTANCE.broadcast(EventType.FightOccurred, eventMessage);
         return won;
     }
 
@@ -134,15 +127,13 @@ public abstract class Character {
         Room destinationRoom = getCurrentLocation().getNeighbor(direction);
         String eventMessage = String.format("%s moved %s from %s to %s", getName(), direction, getCurrentLocation().getName(), destinationRoom.getName());
         logger.info(eventMessage);
-        EventBus.INSTANCE.broadcast(EventType.MovedRooms, eventMessage);
         destinationRoom.enter(this);
     }
 
     public void eat(IArtifact food) {
-        this.gainHealth(food.getHealthValue());
+        this.gainHealth(food.getValue());
         String eventMessage = String.format("%s ate %s", getName(), food.getName());
         logger.info(eventMessage);
-        EventBus.INSTANCE.broadcast(EventType.SomethingEaten, eventMessage);
     }
 
     public void wear(IArtifact armor) {

@@ -10,8 +10,6 @@ public class ArtifactFactory {
     private static final Random random = new Random();
 
     public static double DEFAULT_VALUE = 0.0;
-    public static double DEFAULT_STRENGTH = 0.0;
-    public static double DEFAULT_MOVING_COST = 0.2;
     private static final double MINIMUM_VALUE = 1.0;
     private static final double MAXIMUM_VALUE = 2.0;
 
@@ -62,42 +60,43 @@ public class ArtifactFactory {
     }
 
     public IArtifact create(ArtifactType type) {
-        return create(type, getRandomName(type), getRandomValue(), getRandomValue(), getRandomValue());
+        return create(type, getRandomName(type), getRandomValue());
     }
 
-    public IArtifact create(ArtifactType type, String name, double healthValue, double strength) {
-        return create(type, name, healthValue, strength, DEFAULT_MOVING_COST);
-    }
-
-    public IArtifact create(ArtifactType type, String name, double healthValue, double strength, double movingCost) {
+    public IArtifact create(ArtifactType type, String name, double value) {
         return switch (type) {
-            case Food -> new Food(name, healthValue);
-            case Armor -> new Armor(name, strength, movingCost);
-            case Weapon -> new Weapon(name, strength, movingCost);
+            case Food -> new Food(name, value);
+            case Armor -> new Armor(name, value);
+            case Weapon -> new Weapon(name, value);
+            case Treasure ->  new Treasure(name, value);
         };
     }
 
     public IArtifact createFood(String name) {
-        return create(ArtifactType.Food, name, getRandomValue(), DEFAULT_STRENGTH);
+        return create(ArtifactType.Food, name, getRandomValue());
     }
 
     public IArtifact createFood(String name, double value) {
-        return create(ArtifactType.Food, name, value, DEFAULT_STRENGTH);
+        return create(ArtifactType.Food, name, value);
     }
 
     public IArtifact createArmor(String name) {
-        return create(ArtifactType.Armor, name, DEFAULT_VALUE, DEFAULT_STRENGTH);
+        return create(ArtifactType.Armor, name, DEFAULT_VALUE);
     }
 
     public IArtifact createArmor(String name, double strength) {
-        return create(ArtifactType.Armor, name, DEFAULT_VALUE, strength);
+        return create(ArtifactType.Armor, name, strength);
     }
 
     public IArtifact createWeapon(String name) {
-        return create(ArtifactType.Weapon, name, DEFAULT_VALUE, DEFAULT_STRENGTH);
+        return create(ArtifactType.Weapon, name, DEFAULT_VALUE);
     }
 
     public IArtifact createWeapon(String name, double strength) {
-        return create(ArtifactType.Weapon, name, DEFAULT_VALUE, strength);
+        return create(ArtifactType.Weapon, name, strength);
+    }
+
+    public IArtifact createTreasure(String name) {
+        return create(ArtifactType.Treasure, name, DEFAULT_VALUE);
     }
 }

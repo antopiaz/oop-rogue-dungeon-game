@@ -2,7 +2,6 @@ package polymorphia.maze;
 
 import java.util.*;
 
-import polymorphia.DirectionType;
 import polymorphia.artifacts.ArtifactType;
 import polymorphia.artifacts.IArtifact;
 import polymorphia.characters.Character;
@@ -200,7 +199,7 @@ public class Room {
     public void alterCharacter(Character removedCharacter, Character newCharacter) {
         characters.remove(removedCharacter);
         characters.add(newCharacter);
-        Room room = (removedCharacter.getCurrentLocation());
         newCharacter.enterRoom(removedCharacter.getCurrentLocation());
     }
+
 }

@@ -1,15 +1,8 @@
 package polymorphia.maze;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.stream.IntStream;
 
-import org.slf4j.Logger;
-
-import polymorphia.DirectionType;
 import polymorphia.artifacts.IArtifact;
 import polymorphia.characters.Character;
 

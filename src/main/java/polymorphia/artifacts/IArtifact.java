@@ -3,13 +3,7 @@ package polymorphia.artifacts;
 public interface IArtifact {
     String getName();
 
-    double getHealthValue();
-
-    double getDefenseValue();
-
-    double getStrength();
-
-    double getMovingCost();
+    double getValue();
 
     boolean isType(ArtifactType type);
 }

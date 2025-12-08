@@ -1,16 +1,15 @@
 package polymorphia.artifacts;
 
 public class Weapon extends Artifact {
-    public static double DEFAULT_HEALTH_VALUE = 0.0;
 
-    public Weapon(String name, double strength, double movingCost) {
-        super(ArtifactType.Weapon, name, DEFAULT_HEALTH_VALUE, strength, movingCost);
+    public Weapon(String name, double attackValue) {
+        super(ArtifactType.Weapon, name, attackValue);
     }
 
     @Override
     public String toString() {
-        String formattedStrength = String.format("%.2f", getStrength());
-        return "weapon " + getName() + "(strength:" + formattedStrength + ", movingCost:" + getMovingCost() + ")";
+        String formattedStrength = String.format("%.2f", getValue());
+        return "weapon " + getName() + "(strength:" + formattedStrength + ")";
     }
 
 }

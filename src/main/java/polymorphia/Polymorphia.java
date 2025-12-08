@@ -10,11 +10,8 @@ import polymorphia.artifacts.IArtifact;
 import polymorphia.characters.Character;
 import polymorphia.maze.Maze;
 import polymorphia.maze.Room;
-import polymorphia.observers.EventBus;
-import polymorphia.observers.EventIssuingObservable;
-import polymorphia.observers.EventObserver;
 
-public class Polymorphia implements EventIssuingObservable {
+public class Polymorphia {
     static Logger logger = org.slf4j.LoggerFactory.getLogger(Polymorphia.class);
 
     Maze maze;
@@ -26,28 +23,6 @@ public class Polymorphia implements EventIssuingObservable {
         this.maze = maze;
         this.scanner = scanner;
     }
-
-    // *********** EventIssuingObservable required methods ***********
-    @Override
-    public void attach(EventObserver observer) {
-        attach(observer, EventType.All);
-    }
-
-    @Override
-    public void attach(EventObserver observer, EventType type) {
-        EventBus.INSTANCE.attach(observer, type);
-    }
-
-    @Override
-    public void attach(EventObserver observer, List<EventType> types) {
-        EventBus.INSTANCE.attach(observer, types);
-    }
-
-    @Override
-    public void detach(EventObserver observer) {
-        EventBus.INSTANCE.detach(observer);
-    }
-    // *********** EventIssuingObservable required methods ***********
 
     @Override
     public String toString() {
@@ -84,7 +59,6 @@ public class Polymorphia implements EventIssuingObservable {
         }
         String eventMessage = String.format("Turn %s ended and there are %s living adventurers", turnCount, maze.getLivingAdventurers().size());
         logger.info(eventMessage);
-        EventBus.INSTANCE.broadcast(EventType.TurnEnded, eventMessage);
     }
 
     private List<Character> getLivingCharacters() {
@@ -93,14 +67,12 @@ public class Polymorphia implements EventIssuingObservable {
 
 
     public void play() {
-        EventBus.INSTANCE.broadcast(EventType.GameStart, "The game just started");
         while (!isOver()) {
-            playTurn();
             displayUI();
+            playTurn();
             logger.info(this.toString());
         }
         String eventMessage = String.format("The game ended after %s turns", turnCount);
-        EventBus.INSTANCE.broadcast(EventType.GameOver, eventMessage);
 
         logger.info("The game ended after {} turns.\n", turnCount);
         String eventDescription;
@@ -174,7 +146,7 @@ public class Polymorphia implements EventIssuingObservable {
         sb.append("--- ARTIFACTS IN ROOM: ---\n");
         if (currentRoom.hasArtifacts()) {
             for (IArtifact artifact : currentRoom.getArtifacts()) {
-                sb.append("o ").append(artifact.getName()).append(": ").append(artifact.getStrength()).append("\n");
+                sb.append("o ").append(artifact.getName()).append(": ").append(artifact.getValue()).append("\n");
             }
         } else {
             sb.append("(None)\n");

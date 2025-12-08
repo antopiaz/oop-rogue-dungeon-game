@@ -1,5 +1,5 @@
 package polymorphia.characters;
-import polymorphia.DirectionType;
+import polymorphia.maze.DirectionType;
 import polymorphia.artifacts.IArtifact;
 import polymorphia.strategy.PlayStrategy;
 
@@ -30,14 +30,21 @@ public class Player extends Character {
         String command = action[0];
         String argument = action.length > 1 ? action[1] : null;
 
+
+        Character selfInRoom = getCurrentLocation().getLivingCharacters()
+                .stream()
+                .filter(c -> c.getName().contains(getName()))
+                .findFirst()
+                .orElse(this);
+
+
         if (command.equals("fight")) { //TODO pick creature by name
             Character creature = getCurrentLocation().getCreature(argument);
-
             if (creature != null) {
                 int fightAction = getFightAction();
                 int foeFightAction = creature.getFightAction();
 
-                fight(creature, fightAction, foeFightAction);
+                fight(selfInRoom,creature, fightAction, foeFightAction);
                 System.out.println("chose: " + fightAction);
 
             }
@@ -91,6 +98,5 @@ public class Player extends Character {
             System.out.println("Equipped "  + argument);
         }
     }
-
 
 }
