@@ -10,6 +10,7 @@ import dungeon.artifacts.IArtifact;
 import dungeon.characters.Character;
 import dungeon.characters.CharacterFactory;
 import dungeon.characters.Player;
+import dungeon.maze.DirectionType;
 import dungeon.maze.Maze;
 import dungeon.maze.Room;
 import dungeon.maze.RoomFactory;
@@ -32,7 +33,6 @@ public class GameFacade {
         CharacterFactory characterFactory = new CharacterFactory();
 
         Player player = new Player("Hero", scanner, new HumanStrategy(scanner));
-        IArtifact treasure = artifactFactory.createTreasure("treasure");
         Maze maze = Maze.getNewBuilder(roomFactory)
                 .createDungeon(4,4)
                 .add(player)
@@ -43,7 +43,6 @@ public class GameFacade {
                 .addArtifacts(artifactFactory.createWeapons(10))
                 .addArtifacts(artifactFactory.createArmoredSuits(10))
                 .addArtifacts(artifactFactory.createTreasures(5))
-                .addArtifact(treasure)
                 .build();
 
         logger.info(maze.toString());
@@ -58,7 +57,6 @@ public class GameFacade {
         while (!dungeon.isOver()) {
             displayUI();
             dungeon.playTurn();
-            logger.info(dungeon.toString());
         }
         
         dungeon.printGameOverMessage();
@@ -81,89 +79,105 @@ public class GameFacade {
     }
 
     public void displayUI() {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder UIStringBuilder = new StringBuilder();
 
         Character player = dungeon.maze.getLivingAdventurers().getFirst();
         Room currentRoom = player.getCurrentLocation();
 
-        sb.append("_____________________________________________________________________________\n");
+        UIStringBuilder.append("_____________________________________________________________________________\n");
+        if (currentRoom.hasNeighbor(DirectionType.NORTH)) {
+            UIStringBuilder.append("|                                    .                                      |\n");
+            UIStringBuilder.append("|                                  .:;:.                                    |\n");
+            UIStringBuilder.append("|                                .:;;;;;:.                                  |\n");
+            UIStringBuilder.append("|                                  ;;;;;                                    |\n");
+            UIStringBuilder.append("|                                  ;;;;;                                    |\n");
+            UIStringBuilder.append("|                                 (north)                                   |\n");
+        }
+        else {
+            UIStringBuilder.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
+        }
         
         if (currentRoom.hasLivingCreatures()) {
-            sb.append("|                                                      (enemy)              |\n");
-            sb.append("|                                                       o   o               |\n");
-            sb.append("|                                                       |\\O/|               |\n");
-            sb.append("|                                                        \\Y/                |\n");
-            sb.append("|                                                        /_\\                |\n");
-            sb.append("|                                                        _W_                |\n");
+            UIStringBuilder.append("|                                                      (enemy)              |\n");
+            UIStringBuilder.append("|                                                       o   o               |\n");
+            UIStringBuilder.append("|                                                       |\\O/|               |\n");
+            UIStringBuilder.append("|                                                        \\Y/                |\n");
+            UIStringBuilder.append("|                                                        /_\\                |\n");
+            UIStringBuilder.append("|                                                        _W_                |\n");
         }
         else {
-            sb.append("|                                                                           |\n");
-            sb.append("|                                                                           |\n");
-            sb.append("|                                                                           |\n");
-            sb.append("|                                                                           |\n");
-            sb.append("|                                                                           |\n");
-            sb.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
         }
-        sb.append("|                                                                           |\n");
+        UIStringBuilder.append("|                                                                           |\n");
 
         if (currentRoom.hasArtifacts()) {
-            sb.append("|                               __________                                  |\n");
-            sb.append("|                              /\\____;;___\\                                 |\n");
-            sb.append("|                             | /         /                                 |\n");
-            sb.append("|                             `. ())oo() .                                  |\n");
-            sb.append("|                              |\\(%()*^^()^\\                                |\n");
-            sb.append("|                              | |-%-------|                                |\n");
-            sb.append("|                              \\ | %  ))   |                                |\n");
-            sb.append("|                               \\|%________|                                |\n");
+            UIStringBuilder.append("|                               __________                                  |\n");
+            UIStringBuilder.append("|                              /\\____;;___\\                                 |\n");
+            UIStringBuilder.append("|                             | /         /                                 |\n");
+            UIStringBuilder.append("|                             `. ())oo() .                                  |\n");
+            UIStringBuilder.append("|                              |\\(%()*^^()^\\                                |\n");
+            UIStringBuilder.append("|                              | |-%-------|                                |\n");
+            UIStringBuilder.append("|                              \\ | %  ))   |                                |\n");
+            UIStringBuilder.append("|                               \\|%________|                                |\n");
         }
         else {
-            sb.append("|                                                                           |\n");
-            sb.append("|                                                                           |\n");
-            sb.append("|                                                                           |\n");
-            sb.append("|                                                                           |\n");
-            sb.append("|                                                                           |\n");
-            sb.append("|                                                                           |\n");
-            sb.append("|                                                                           |\n");
-            sb.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
         }
-        sb.append("|        (you)                                                              |\n");
-        sb.append("|         `o^                                                               |\n");
-        sb.append("|       ^\\/0\\_+---                                                          |\n");
-        sb.append("|         /O\\                                                               |\n");
-        sb.append("|        _| /_                                                              |\n");
-        sb.append("|                                                                           |\n");
-        sb.append("_____________________________________________________________________________\n");
+        UIStringBuilder.append("|        (you)                                                              |\n");
+        UIStringBuilder.append("|         `o^                                                               |\n");
+        UIStringBuilder.append("|       ^\\/0\\_+---                                                          |\n");
+        UIStringBuilder.append("|         /O\\                                                               |\n");
+        UIStringBuilder.append("|        _| /_                                                              |\n");
+        UIStringBuilder.append("|                                                                           |\n");
+        UIStringBuilder.append("_____________________________________________________________________________\n");
         
-        sb.append(" LOCATION: \n").append(currentRoom.toString()).append("\n\n");
-        sb.append("========================================\n\n");
+        UIStringBuilder.append(" LOCATION: \n").append(currentRoom.toString()).append("\n\n");
+        UIStringBuilder.append("========================================\n\n");
 
-        sb.append("--- ARTIFACTS IN ROOM: ---\n");
+        UIStringBuilder.append("--- ARTIFACTS IN ROOM: ---\n");
         if (currentRoom.hasArtifacts()) {
             for (IArtifact artifact : currentRoom.getArtifacts()) {
-                sb.append("o ").append(artifact.getName()).append(": ").append(artifact.getValue()).append("\n");
+                UIStringBuilder.append("o ").append(artifact.getName()).append(": ").append(artifact.getValue()).append("\n");
             }
         } else {
-            sb.append("(None)\n");
+            UIStringBuilder.append("(None)\n");
         }
-        sb.append("\n");
+        UIStringBuilder.append("\n");
 
-        sb.append("--- ENEMIES IN ROOM: ---\n");
+        UIStringBuilder.append("--- ENEMIES IN ROOM: ---\n");
         if (currentRoom.hasLivingCreatures()) {
-            for (Character monster : currentRoom.getLivingCreatures()) {
-                sb.append("x ").append(monster.getName()).append(" (HP: ").append(monster.getHealth()).append(")\n");
+            for (Character enemy : currentRoom.getLivingCreatures()) {
+                UIStringBuilder.append("x ").append(enemy.getName()).append(" (HP: ").append(enemy.getHealth()).append(")\n");
             }
         } else {
-            sb.append("(Safe)\n");
+            UIStringBuilder.append("(Safe)\n");
         }
-        sb.append("\n");
+        UIStringBuilder.append("\n");
 
-        sb.append("--- YOUR STATS ---\n");
-        sb.append("HP: ").append(player.getHealth()).append("\n");
-        sb.append("Turn: ").append(dungeon.getTurnCount()).append("\n");
-        sb.append("\n");
+        UIStringBuilder.append("--- YOUR STATS ---\n");
+        UIStringBuilder.append("HP: ").append(player.getHealth()).append("\n");
+        UIStringBuilder.append("Turn: ").append(dungeon.getTurnCount()).append("\n");
+        UIStringBuilder.append("\n");
 
         // Print out string representation
-        System.out.println(sb.toString());
+        System.out.println(UIStringBuilder.toString());
     }
 
     private void printWelcomeMessage() {
