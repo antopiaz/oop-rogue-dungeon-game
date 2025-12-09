@@ -5,9 +5,11 @@ import java.util.List;
 
 import dungeon.artifacts.IArtifact;
 import dungeon.characters.Character;
+import java.util.Random;
 
 public class Maze {
     private List<Room> rooms;
+    private final static Random random = new Random();
 
     private Maze() {
     }
@@ -58,7 +60,7 @@ public class Maze {
         }
 
         private Room nextRoom() {
-            return maze.getRooms().get(currentRoomIndex++ % maze.getRooms().size());
+            return maze.getRooms().get(random.nextInt(maze.getRooms().size()));
         }
 
         public Builder createGridOfRooms(int rows, int columns) {
