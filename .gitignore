@@ -3,7 +3,7 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-polymorphia.log
+dungeon.log
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
@@ -42,7 +42,7 @@ bin/
 ### Mac OS ###
 .DS_Store
 /.idea/AndroidProjectSystem.xml
-/polymorphia.log
+/dungeon.log
 /.idea/copilot.data.migration.agent.xml
 /.idea/copilot.data.migration.edit.xml
 /.idea/git_toolbox_prj.xml
