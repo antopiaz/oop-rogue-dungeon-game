@@ -18,6 +18,7 @@ public class GameTest {
     RoomFactory roomFactory = new RoomFactory();
     CharacterFactory characterFactory = new CharacterFactory();
 
+    final static double DEFAULT_HEALTH = 5.0;
     @Test
     public void testFight() {
         Scanner scanner = new Scanner("eat apple\nfight ogre 1 \nstrike\nfight ogre 1 \nstrike\nfight ogre 1 \nstrike\nfight ogre 1 \nstrike");
@@ -41,12 +42,12 @@ public class GameTest {
 
     @Test
     public void testMove() {
-        Scanner scanner = new Scanner("move south\nmove east\nmove south\nmove west\nobtain treasure");
+        Scanner scanner = new Scanner("move south\nmove east\nmove south\nmove west\nobtain treasure\nfight ogre\nstrike\nfight ogre\nstrike\nfight ogre\nstrike");
         IArtifact treasure = artifactFactory.createTreasure("treasure");
         Player player = new Player("Hero", scanner, new HumanStrategy(scanner));
         Maze maze = Maze.getNewBuilder(roomFactory)
                 .createDungeon(2,2)
-                .add(characterFactory.createCreature("Ogre", 5.0))
+                .add(characterFactory.createCreature("Ogre", 1.0))
                 .addArtifact(treasure, "Room (0,0)")
                 .addCharacterToStart(player)
                 .build();
@@ -66,7 +67,7 @@ public class GameTest {
         Maze maze = Maze.getNewBuilder(roomFactory)
                 .createDungeon(1,1)
                 .add(player)
-                .add(characterFactory.createAttacker("attacker 1", 5.0))
+                .add(characterFactory.createAttacker("attacker 1", DEFAULT_HEALTH))
                 .addArtifact(food)
                 .addArtifact(treasure)
                 .build();
@@ -89,7 +90,7 @@ public class GameTest {
         Maze maze = Maze.getNewBuilder(roomFactory)
                 .createDungeon(1,1)
                 .add(player)
-                .add(characterFactory.createAttacker("attacker 1", 5.0))
+                .add(characterFactory.createAttacker("attacker 1", DEFAULT_HEALTH))
                 .addArtifact(food)
                 .addArtifact(armor)
                 .addArtifact(treasure)
@@ -112,7 +113,7 @@ public class GameTest {
         Maze maze = Maze.getNewBuilder(roomFactory)
                 .createDungeon(1,1)
                 .add(player)
-                .add(characterFactory.createAttacker("attacker 1",5.0))
+                .add(characterFactory.createAttacker("attacker 1",DEFAULT_HEALTH))
                 .addArtifact(food)
                 .addArtifact(weapon)
                 .addArtifact(treasure)

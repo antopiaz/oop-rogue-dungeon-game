@@ -16,7 +16,7 @@ public class CharacterFactory {
     private static final Random random = new Random();
 
     public static final String[] CREATURE_NAMES = new String[]{"Ogre", "Orc", "Goblin", "Troll", "Zombie", "Skeleton", "Rat", "Ghoul", "Hobgoblin", "Shadow", "Slime"};
-    public static final String[] DEFENDER_NAMES = new String[]{"Dwarf", "Dullahan", "Corrupted Paladin", "Hammerer", "Giant"};
+    public static final String[] DEFENDER_NAMES = new String[]{"Dwarf", "Dullahan", "Corrupted Paladin", "Hammerer", "Giant", "Golem", "Nabisco"};
 
 
     public static final Map<String, String[]> NAMES = new HashMap<>();

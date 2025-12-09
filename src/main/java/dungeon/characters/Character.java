@@ -8,12 +8,15 @@ import dungeon.maze.Room;
 import dungeon.strategy.PlayStrategy;
 
 public abstract class Character {
+
     static Logger logger = org.slf4j.LoggerFactory.getLogger(Character.class);
 
     protected String name;
     private Double health;
     PlayStrategy strategy;
     private Room currentLocation;
+    final double DEFAULT_DAMAGE = 3.0;
+    final double DEFAULT_TIE_DAMAGE = 1.5;
 
     public Character(String name, Double health, PlayStrategy playStrategy) {
         this.name = name;
@@ -87,7 +90,6 @@ public abstract class Character {
 
     public Boolean fight(Character self, Character foe, FightActions myFightAction, FightActions foeFightAction) {
         logger.info(self.getName() + " is fighting " + foe);
-
         logger.info(self.getName() + " chose " + myFightAction);
         logger.info(foe + " chose " + foeFightAction);
         double finalDamage;
@@ -95,18 +97,21 @@ public abstract class Character {
         if ((myFightAction==FightActions.LUNGE && foeFightAction == FightActions.STRIKE)   ||
                 (myFightAction==FightActions.GRAPPLE && foeFightAction == FightActions.LUNGE)||
                 (myFightAction == FightActions.STRIKE && foeFightAction==FightActions.GRAPPLE)) {
+
             won = true;
-            finalDamage = self.dealFightDamage(3.0);
+            finalDamage = self.dealFightDamage(DEFAULT_DAMAGE);
             foe.loseFightDamage(finalDamage);
+
         } else if ((myFightAction==FightActions.STRIKE && foeFightAction == FightActions.LUNGE) ||
                   (myFightAction==FightActions.LUNGE && foeFightAction == FightActions.GRAPPLE)||
                   (myFightAction ==FightActions.GRAPPLE && foeFightAction==FightActions.STRIKE)) {
-            finalDamage = foe.dealFightDamage(3.0);
+
+            finalDamage = foe.dealFightDamage(DEFAULT_DAMAGE);
             self.loseFightDamage(finalDamage);
         }
         else if(myFightAction==foeFightAction) {
-            self.loseFightDamage(1.5);
-            foe.loseFightDamage(1.5);
+            self.loseFightDamage(DEFAULT_TIE_DAMAGE);
+            foe.loseFightDamage(DEFAULT_TIE_DAMAGE);
         }
         String eventMessage = String.format("%s fought %s and %s!", getName(), foe.getName(), won ? "won" : "lost");
         logger.info(eventMessage);

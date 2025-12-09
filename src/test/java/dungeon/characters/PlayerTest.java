@@ -9,12 +9,13 @@ import java.util.Scanner;
 
 public class PlayerTest {
     Scanner scanner = new Scanner(System.in);
+    final static double DEFAULT_HEALTH=10.0;
 
     @Test
     public void testConstructor() {
         Player hero = new Player("Hero", scanner, new HumanStrategy(scanner));
         assertEquals("Hero", hero.getName());
-        assertEquals(10.0, hero.getHealth());
+        assertEquals(DEFAULT_HEALTH, hero.getHealth());
     }
 
     @Test

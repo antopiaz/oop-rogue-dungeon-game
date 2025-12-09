@@ -12,10 +12,6 @@ public class Maze {
     private Maze() {
     }
 
-    public int size() {
-        return rooms.size();
-    }
-
     @Override
     public String toString() {
         return String.join("\n\n", rooms.stream().map(Object::toString).toList());
@@ -28,7 +24,7 @@ public class Maze {
     public Boolean hasLivingAdventurers() {
         return rooms.stream().anyMatch(Room::hasLivingAdventurers);
     }
-    
+
     public List<Character> getLivingCharacters() {
         List<Character> characters = new ArrayList<>();
         for (Room room : rooms) {
@@ -44,6 +40,7 @@ public class Maze {
     }
 
     public List<Room> getRooms() {
+
         return List.copyOf(rooms);
     }
 
@@ -67,10 +64,11 @@ public class Maze {
         public Builder createGridOfRooms(int rows, int columns) {
             Room[][] roomGrid = new Room[rows][columns];
             List<Room> rooms = new ArrayList<>();
-            for (int row = 0; row < rows; row++) {
-                for (int column = 0; column < columns; column++) {
-                    Room newRoom = roomFactory.createRoom(String.valueOf("Room (" + row + "," + column + ")"));
-                    roomGrid[row][column] = newRoom;
+
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < columns; j++) {
+                    Room newRoom = roomFactory.createRoom(String.valueOf("Room (" + i + "," + j + ")"));
+                    roomGrid[i][j] = newRoom;
                     rooms.add(newRoom);
                 }
             }
@@ -125,22 +123,19 @@ public class Maze {
             return this;
         }
 
-
-        public Maze build() {
-            assert maze.size() > 0;
-            return maze;
-        }
-
         public Builder createDungeon(int rows, int columns) {
             createGridOfRooms(rows, columns);
             return this;
         }
 
         public Builder addCharacterToStart(Character character) {
-            System.out.println("STARET ROOM " + maze.getRooms().get(0).getName());
-            maze.getRooms().get(0).add(character);
-
+            maze.getRooms().getFirst().add(character);
             return this;
         }
+
+        public Maze build() {
+            return maze;
+        }
+
     }
 }

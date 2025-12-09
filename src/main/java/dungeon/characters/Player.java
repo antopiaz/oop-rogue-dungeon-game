@@ -1,6 +1,7 @@
 package dungeon.characters;
 import dungeon.maze.DirectionType;
 import dungeon.artifacts.IArtifact;
+import dungeon.maze.Room;
 import dungeon.strategy.PlayStrategy;
 
 import java.util.Scanner;
@@ -30,12 +31,7 @@ public class Player extends Character {
         String command = action[0];
         String argument = action.length > 1 ? action[1] : null;
 
-
-        Character selfInRoom = getCurrentLocation().getLivingCharacters()
-                .stream()
-                .filter(c -> c.getName().contains(getName()))
-                .findFirst()
-                .orElse(this);
+        Character selfInRoom = getSelfInRoom(getCurrentLocation());
 
         switch (command) {
             case "fight":
@@ -121,13 +117,26 @@ public class Player extends Character {
     }
 
     private void handleObtain(String argument) {
-        IArtifact treasure = getCurrentLocation().getTreasure(argument);
-        if(treasure != null){
-            obtain(treasure);
+        if(getCurrentLocation().hasLivingCreatures()){
+            logger.info("A monster is currently guarding the treasure");
         }
-        logger.info("Obtained "  + argument);
+        else{
+            IArtifact treasure = getCurrentLocation().getTreasure(argument);
+            if(treasure != null){
+                obtain(treasure);
+            }
+            logger.info("Obtained "  + argument);
+        }
     }
 
+    private Character getSelfInRoom(Room currentLocation){
+        Character selfInRoom = currentLocation.getLivingCharacters()
+                .stream()
+                .filter(c -> c.getName().contains(getName()))
+                .findFirst()
+                .orElse(this);
+        return selfInRoom;
+    }
 
 
 
