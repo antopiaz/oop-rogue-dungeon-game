@@ -23,12 +23,12 @@ public class GameFacade {
     private static final Logger logger = LoggerFactory.getLogger(GameFacade.class);
     private static final Random random = new Random();
 
-    private static final int MAZE_MIN_WIDTH_LENGTH = 2;
+    private static final int MAZE_MIN_WIDTH_LENGTH = 3;
     private static final int MAZE_MAX_WIDTH_LENGTH = 6;
     private static final int MIN_NUMBER_OF_ENEMIES = 5;
     private static final int MAX_NUMBER_OF_ENEMIES = 10;
-    private static final int MIN_NUMBER_OF_FOOD_ITEMS = 15;
-    private static final int MAX_NUMBER_OF_FOOD_ITEMS = 25;
+    private static final int MIN_NUMBER_OF_FOOD_ITEMS = 10;
+    private static final int MAX_NUMBER_OF_FOOD_ITEMS = 20;
     private static final int DEFAULT_NUMBER_OF_ARMOR_AND_WEAPONS = 10;
     private static final int DEFAULT_NUMBER_OF_TREASURE_ITEMS = 5;
 
@@ -223,13 +223,14 @@ public class GameFacade {
 
         UIStringBuilder.append("_____________________________________________________________________________\n");
         
-        UIStringBuilder.append(" LOCATION: \n").append(currentRoom.toString()).append("\n\n");
+        UIStringBuilder.append(" LOCATION: \n").append(currentRoom.toString()).append("\n");
+        UIStringBuilder.append(" Adjacent Rooms: \n").append(currentRoom.getNeighborListString()).append("\n");
         UIStringBuilder.append("========================================\n\n");
 
         UIStringBuilder.append("--- ARTIFACTS IN ROOM: ---\n");
         if (currentRoom.hasArtifacts()) {
             for (IArtifact artifact : currentRoom.getArtifacts()) {
-                UIStringBuilder.append("o ").append(artifact.getName()).append(": ").append(artifact.getValue()).append("\n");
+                UIStringBuilder.append("o ").append(artifact.getName()).append(": ").append(String.format("%.2f", artifact.getValue())).append("\n");
             }
         } else {
             UIStringBuilder.append("(None)\n");
@@ -239,7 +240,7 @@ public class GameFacade {
         UIStringBuilder.append("--- ENEMIES IN ROOM: ---\n");
         if (currentRoom.hasLivingCreatures()) {
             for (Character enemy : currentRoom.getLivingCreatures()) {
-                UIStringBuilder.append("x ").append(enemy.getName()).append(" (HP: ").append(enemy.getHealth()).append(")\n");
+                UIStringBuilder.append("x ").append(enemy.getName()).append(" (HP: ").append(String.format("%.2f", enemy.getHealth())).append(")\n");
             }
         } else {
             UIStringBuilder.append("(Safe)\n");
@@ -247,7 +248,7 @@ public class GameFacade {
         UIStringBuilder.append("\n");
 
         UIStringBuilder.append("--- YOUR STATS ---\n");
-        UIStringBuilder.append("HP: ").append(player.getHealth()).append("\n");
+        UIStringBuilder.append("HP: ").append(String.format("%.2f", player.getHealth())).append("\n");
         UIStringBuilder.append("Turn: ").append(dungeon.getTurnCount()).append("\n");
         UIStringBuilder.append("\n");
 
@@ -256,9 +257,9 @@ public class GameFacade {
     }
 
     private void printWelcomeMessage() {
-        logger.info("╔════════════════════════════════════════╗");
-        logger.info("║      WELCOME TO JAVA GUYS DUNGEON!     ║");
-        logger.info("╚════════════════════════════════════════╝");
+        logger.info("__________________________________________");
+        logger.info("|      WELCOME TO JAVA GUYS DUNGEON!     |");
+        logger.info("__________________________________________");
         logger.info("\n");
     }
 

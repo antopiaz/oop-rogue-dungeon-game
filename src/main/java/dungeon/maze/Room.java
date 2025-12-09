@@ -1,11 +1,16 @@
 package dungeon.maze;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import dungeon.artifacts.*;
+import dungeon.artifacts.Armor;
+import dungeon.artifacts.Food;
+import dungeon.artifacts.IArtifact;
+import dungeon.artifacts.Treasure;
+import dungeon.artifacts.Weapon;
 import dungeon.characters.Character;
-
-import static dungeon.artifacts.ArtifactType.Weapon;
 
 public class Room {
     private final String name;
@@ -76,6 +81,19 @@ public class Room {
             return neighbors.get(direction);
         }
         return null;
+    }
+
+    public String getNeighborListString() {
+        StringBuilder neighborListStringBuilder = new StringBuilder();
+
+        for (Map.Entry<DirectionType, Room> neighbor : neighbors.entrySet()) {
+            String neighborName = neighbor.getValue().getName();
+            String neighborDirection = neighbor.getKey().toString().toLowerCase();
+            neighborListStringBuilder.append("\t").append(neighborName).append(" (to the ").append(neighborDirection).append(")");
+            neighborListStringBuilder.append("\n");
+        }
+
+        return neighborListStringBuilder.toString();
     }
 
     public void enter(Character character) {

@@ -8,8 +8,7 @@ public class Treasure extends Artifact {
 
     @Override
     public String toString() {
-        String formattedStrength = String.format("%.2f", getValue());
-        return getName() + " Treasure(value:" + formattedStrength + ")";
+        return getName() + " (treasure)";
     }
 
 }
