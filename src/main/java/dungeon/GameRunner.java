@@ -3,8 +3,7 @@ package dungeon;
 import java.util.Scanner;
 
 public class GameRunner {
-    
-    public static void gameRunner(String[] args) {
+    public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
             GameFacade game = GameFacade.initializeGame(scanner);
             game.play();

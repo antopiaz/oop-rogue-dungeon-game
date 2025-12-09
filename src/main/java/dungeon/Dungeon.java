@@ -70,7 +70,6 @@ public class Dungeon {
     public void play() {
         while (!isOver()) {
             playTurn();
-            logger.info(this.toString());
         }
 
         printGameOverMessage();
