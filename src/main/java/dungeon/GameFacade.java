@@ -174,9 +174,10 @@ public class GameFacade {
         logger.info("Game started with maze:\n" + dungeon.maze.toString());
     }
 
-    private void printInstructions() {
+    public static void printInstructions() {
         System.out.println("\n=== HELP ===");
-        System.out.println("fight <enemy>  - Attack an enemy");
+        System.out.println("help - To see commands again");
+        System.out.println("fight <enemy>  - Attack an enemy, (strike, lunge, grapple)");
         System.out.println("move <direction> - Move (north/south/east/west)");
         System.out.println("eat <food>     - Consume food");
         System.out.println("wear <armor>   - Put on armor");

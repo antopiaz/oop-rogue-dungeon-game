@@ -6,6 +6,8 @@ import dungeon.strategy.PlayStrategy;
 
 import java.util.Scanner;
 
+import static dungeon.GameFacade.printInstructions;
+
 
 public class Player extends Character {
 
@@ -52,6 +54,8 @@ public class Player extends Character {
             case "obtain":
                 handleObtain(argument);
                 break;
+            case "help":
+                printInstructions();
             default:
                 logger.info("Invalid command");
         }
