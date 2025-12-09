@@ -10,7 +10,7 @@ import dungeon.strategy.PlayStrategy;
 
 public class Player extends Character {
 
-    public static final double DEFAULT_HEALTH = 15.0;
+    public static final double DEFAULT_HEALTH = 10.0;
     private final Scanner scanner;
 
 

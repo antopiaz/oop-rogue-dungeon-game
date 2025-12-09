@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class PlayerTest {
     Scanner scanner = new Scanner(System.in);
-    final static double DEFAULT_HEALTH=15.0;
+    final static double DEFAULT_HEALTH=10.0;
 
     @Test
     public void testConstructor() {
