@@ -97,10 +97,6 @@ public class GameFacade {
         logger.info(eventMessage);
     }
 
-    public Boolean isOver() {
-        return dungeon.isOver();
-    }
-
     public void displayUI() {
         StringBuilder UIStringBuilder = new StringBuilder();
 
