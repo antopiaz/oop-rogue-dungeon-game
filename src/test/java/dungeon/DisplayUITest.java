@@ -23,13 +23,14 @@ public class DisplayUITest {
     public void testEmptyRoom() {
         Scanner scanner = new Scanner("Hello\n");
 
-        Player player = new Player("Hero", scanner, new HumanStrategy(scanner));
-        Maze maze = Maze.getNewBuilder(roomFactory)
-                .createDungeon(1,1)
-                .add(player)
-                .build();
-        System.out.println(maze.toString());
-        Dungeon game = new Dungeon(maze);
+        // Player player = new Player("Hero", scanner, new HumanStrategy(scanner));
+        // Maze maze = Maze.getNewBuilder(roomFactory)
+        //         .createDungeon(1,1)
+        //         .add(player)
+        //         .build();
+        // System.out.println(maze.toString());
+        // Dungeon dungeon = new Dungeon(maze);
+        GameFacade game = GameFacade.initializeGame(scanner);
         game.displayUI();
         // assert game.isOver();
         // assert !game.hasLivingAdventurers() || !game.hasLivingCreatures();

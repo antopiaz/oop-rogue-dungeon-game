@@ -1,8 +1,12 @@
 package dungeon;
 
+import java.util.Scanner;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import dungeon.artifacts.ArtifactFactory;
 import dungeon.artifacts.IArtifact;
-import dungeon.artifacts.Treasure;
 import dungeon.characters.Character;
 import dungeon.characters.CharacterFactory;
 import dungeon.characters.Player;
@@ -10,36 +14,26 @@ import dungeon.maze.Maze;
 import dungeon.maze.Room;
 import dungeon.maze.RoomFactory;
 import dungeon.strategy.HumanStrategy;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
 
 public class GameFacade {
+    private final Dungeon dungeon;
+    private final Scanner scanner;
+    private static final Logger logger = LoggerFactory.getLogger(GameFacade.class);
 
-    private final Maze maze;
-    private Scanner scanner;
-    private final Logger logger = LoggerFactory.getLogger(GameFacade.class);
-    private final Random rand = new Random();
-    private int turnNum = 0;
-    private boolean gameOver = false;
+    private GameFacade(Dungeon dungeon, Scanner scanner) {
+        this.dungeon = dungeon;
+        this.scanner = scanner;
+    }
 
-    public GameFacade(Maze maze) {
-        this.maze = maze;
-
-        Logger logger = org.slf4j.LoggerFactory.getLogger(GameFacade.class);
+    public static GameFacade initializeGame(Scanner scanner) {
 
         ArtifactFactory artifactFactory = new ArtifactFactory();
         RoomFactory roomFactory = new RoomFactory();
         CharacterFactory characterFactory = new CharacterFactory();
 
-        Scanner scanner = new Scanner(System.in);
-
         Player player = new Player("Hero", scanner, new HumanStrategy(scanner));
         IArtifact treasure = artifactFactory.createTreasure("treasure");
-        maze = Maze.getNewBuilder(roomFactory)
+        Maze maze = Maze.getNewBuilder(roomFactory)
                 .createDungeon(10,10)
                 .add(player)
                 .addCharacters(characterFactory.createCreatures(10))
@@ -51,44 +45,49 @@ public class GameFacade {
                 .addArtifacts(artifactFactory.createTreasures(5))
                 .addArtifact(treasure)
                 .build();
+
         logger.info(maze.toString());
+
+        Dungeon dungeon = new Dungeon(maze);
+        return new GameFacade(dungeon, scanner);
+    }
+
+    public void play() {
+        printWelcomeMessage();
+
+        while (!dungeon.isOver()) {
+            displayUI();
+            dungeon.playTurn();
+            logger.info(dungeon.toString());
+        }
+        
+        dungeon.printGameOverMessage();
     }
 
     public void playTurn() {
-        if (turnNum == 0) {
-            logger.info("\nStarting Game\nYou can fight\nmove\neat\nwear\nequip\nobtain\nFor example fight ogre or eat apple etc.");
+        if (dungeon.getTurnCount() == 0) {
+            printInstructions();
         }
-        turnNum +=1;
+        dungeon.incrementTurnCount();
 
-        List<dungeon.characters.Character> characters = maze.getLivingCharacters();
-        while (!characters.isEmpty()) {
-            int index = rand.nextInt(characters.size());
-            Character character = characters.get(index);
-            if (character.isAlive()) {
-                character.doAction();
-            }
-            characters.remove(index);
-        }
-        String eventMessage = String.format("Turn %s ended", turnNum);
+        dungeon.playTurn();
+
+        String eventMessage = String.format("Turn %s ended", dungeon.getTurnCount());
         logger.info(eventMessage);
     }
 
     public Boolean isOver() {
-        boolean treasureTaken = maze.getRooms().stream()
-                .flatMap(room -> room.getArtifacts().stream())
-                .noneMatch(artifact -> artifact instanceof Treasure);
-
-        return !maze.hasLivingCreatures() || !maze.hasLivingAdventurers() || treasureTaken;
+        return dungeon.isOver();
     }
 
     public void displayUI() {
         StringBuilder sb = new StringBuilder();
 
-        Character player = maze.getLivingAdventurers().getFirst(); // TODO: confirm that player is only adventurer
+        Character player = dungeon.maze.getLivingAdventurers().getFirst();
         Room currentRoom = player.getCurrentLocation();
 
         sb.append("_____________________________________________________________________________\n");
-
+        
         if (currentRoom.hasLivingCreatures()) {
             sb.append("|                                                      (enemy)              |\n");
             sb.append("|                                                       o   o               |\n");
@@ -134,7 +133,7 @@ public class GameFacade {
         sb.append("|        _| /_                                                              |\n");
         sb.append("|                                                                           |\n");
         sb.append("_____________________________________________________________________________\n");
-
+        
         sb.append(" LOCATION: \n").append(currentRoom.toString()).append("\n\n");
         sb.append("========================================\n\n");
 
@@ -158,7 +157,31 @@ public class GameFacade {
         }
         sb.append("\n");
 
+        sb.append("--- YOUR STATS ---\n");
+        sb.append("HP: ").append(player.getHealth()).append("\n");
+        sb.append("Turn: ").append(dungeon.getTurnCount()).append("\n");
+        sb.append("\n");
+
+        // Print out string representation
         System.out.println(sb.toString());
     }
 
+    private void printWelcomeMessage() {
+        System.out.println("╔════════════════════════════════════════╗");
+        System.out.println("║      WELCOME TO JAVA GUYS DUNGEON!     ║");
+        System.out.println("╚════════════════════════════════════════╝");
+        System.out.println();
+        logger.info("Game started with maze:\n" + dungeon.maze.toString());
+    }
+
+    private void printInstructions() {
+        System.out.println("\n=== HELP ===");
+        System.out.println("fight <enemy>  - Attack an enemy");
+        System.out.println("move <direction> - Move (north/south/east/west)");
+        System.out.println("eat <food>     - Consume food");
+        System.out.println("wear <armor>   - Put on armor");
+        System.out.println("equip <weapon> - Equip a weapon");
+        System.out.println("obtain <item>  - Pick up treasure");
+        System.out.println("===============\n");
+    }
 }
