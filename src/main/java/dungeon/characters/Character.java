@@ -2,8 +2,8 @@ package dungeon.characters;
 
 import org.slf4j.Logger;
 
-import dungeon.maze.DirectionType;
 import dungeon.artifacts.IArtifact;
+import dungeon.maze.DirectionType;
 import dungeon.maze.Room;
 import dungeon.strategy.PlayStrategy;
 
@@ -15,8 +15,10 @@ public abstract class Character {
     private Double health;
     PlayStrategy strategy;
     private Room currentLocation;
-    final double DEFAULT_DAMAGE = 3.0;
+    public boolean hasTreasure = false;
+    final double DEFAULT_ATTACK = 3.0;
     final double DEFAULT_TIE_DAMAGE = 1.5;
+    final double BASE_DEFENSE = 0.0;
 
     public Character(String name, Double health, PlayStrategy playStrategy) {
         this.name = name;
@@ -77,8 +79,8 @@ public abstract class Character {
         loseHealth(fightDamage);
     }
 
-    public double dealFightDamage(double baseDamage) {
-        return baseDamage;
+    public double dealFightDamage() {
+        return DEFAULT_ATTACK;
     }
 
     public Boolean isAdventurer() {
@@ -100,14 +102,14 @@ public abstract class Character {
                 (myFightAction == FightActions.STRIKE && foeFightAction==FightActions.GRAPPLE)) {
 
             won = true;
-            finalDamage = self.dealFightDamage(DEFAULT_DAMAGE);
+            finalDamage = self.dealFightDamage();
             foe.loseFightDamage(finalDamage);
 
         } else if ((myFightAction==FightActions.STRIKE && foeFightAction == FightActions.LUNGE) ||
                   (myFightAction==FightActions.LUNGE && foeFightAction == FightActions.GRAPPLE)||
                   (myFightAction ==FightActions.GRAPPLE && foeFightAction==FightActions.STRIKE)) {
 
-            finalDamage = foe.dealFightDamage(DEFAULT_DAMAGE);
+            finalDamage = foe.dealFightDamage();
             self.loseFightDamage(finalDamage);
         }
         else if(myFightAction==foeFightAction) {
@@ -143,6 +145,7 @@ public abstract class Character {
     public void obtain(IArtifact treasure) {
         String eventMessage = String.format("%s picked up %s", getName(), treasure.getName());
         logger.info(eventMessage);
+        hasTreasure = true;
     }
 
     public void wear(IArtifact armor) {

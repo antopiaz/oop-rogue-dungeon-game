@@ -79,7 +79,7 @@ public class GameFacade {
 
         while (!dungeon.isOver()) {
             displayUI();
-            dungeon.playTurn();
+            playTurn();
         }
         
         dungeon.printGameOverMessage();

@@ -2,10 +2,10 @@ package dungeon.maze;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import dungeon.artifacts.IArtifact;
 import dungeon.characters.Character;
-import java.util.Random;
 
 public class Maze {
     private List<Room> rooms;
@@ -52,7 +52,6 @@ public class Maze {
 
     public static class Builder {
         final Maze maze = new Maze();
-        private int currentRoomIndex = 0;
         private final RoomFactory roomFactory;
 
         private Builder(RoomFactory roomFactory) {

@@ -16,6 +16,7 @@ public abstract class CharacterDecorator extends Character {
         return decoratedCharacter.getHealth();
     }
 
+    @Override
     public void doAction(){
         decoratedCharacter.doAction();
     }

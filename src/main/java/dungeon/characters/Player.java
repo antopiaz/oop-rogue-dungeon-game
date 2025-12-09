@@ -10,7 +10,7 @@ import dungeon.strategy.PlayStrategy;
 
 public class Player extends Character {
 
-    public static final double DEFAULT_HEALTH = 30.0;
+    public static final double DEFAULT_HEALTH = 15.0;
     private final Scanner scanner;
 
 
@@ -130,8 +130,8 @@ public class Player extends Character {
             IArtifact treasure = getCurrentLocation().getTreasure(argument);
             if(treasure != null){
                 obtain(treasure);
+                logger.info("Obtained " + argument);
             }
-            logger.info("Obtained "  + argument);
         }
     }
 

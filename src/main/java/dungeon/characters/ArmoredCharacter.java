@@ -21,8 +21,8 @@ public class ArmoredCharacter extends CharacterDecorator {
     }
 
     @Override
-    public double dealFightDamage(double baseDamage) {
-        return decoratedCharacter.dealFightDamage(baseDamage);
+    public double dealFightDamage() {
+        return decoratedCharacter.dealFightDamage();
     }
 
 }

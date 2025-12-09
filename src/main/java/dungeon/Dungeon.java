@@ -5,7 +5,6 @@ import java.util.Random;
 
 import org.slf4j.Logger;
 
-import dungeon.artifacts.Treasure;
 import dungeon.characters.Character;
 import dungeon.maze.Maze;
 
@@ -34,11 +33,7 @@ public class Dungeon {
     }
 
     public Boolean isOver() {
-        boolean treasureTaken = maze.getRooms().stream()
-                .flatMap(room -> room.getArtifacts().stream())
-                .noneMatch(artifact -> artifact instanceof Treasure);
-
-        return !hasLivingCreatures() || !hasLivingAdventurers() || treasureTaken;
+        return !hasLivingCreatures() || !hasLivingAdventurers() || maze.getLivingAdventurers().getFirst().hasTreasure;
     }
 
     public Boolean hasLivingCreatures() {
@@ -69,6 +64,7 @@ public class Dungeon {
 
     public void play() {
         while (!isOver()) {
+            incrementTurnCount();
             playTurn();
         }
 
@@ -76,8 +72,8 @@ public class Dungeon {
     }
 
     void printGameOverMessage() {
-        logger.info("GAME OVER\n");
-        logger.info("Turns: {}\n\n", turnCount);
+        System.out.println("GAME OVER\n");
+        System.out.println(String.format("Turns: {}\n\n", turnCount));
         String eventDescription;
         if (hasLivingAdventurers()) {
             eventDescription = "YOU WIN!\n";
@@ -86,6 +82,6 @@ public class Dungeon {
         } else {
             eventDescription = "TIE GAME! Everyone died!\n";
         }
-        logger.info(eventDescription);
+        System.out.println(eventDescription);
     }
 }

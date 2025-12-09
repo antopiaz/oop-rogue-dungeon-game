@@ -1,12 +1,13 @@
 package dungeon.strategy;
 
-import dungeon.characters.FightActions;
-import dungeon.maze.Room;
-import dungeon.characters.Character;
+import java.util.Scanner;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Scanner;
+import dungeon.characters.Character;
+import dungeon.characters.FightActions;
+import dungeon.maze.Room;
 
 public class HumanStrategy extends PlayStrategy {
     private final Scanner scanner;
@@ -18,8 +19,8 @@ public class HumanStrategy extends PlayStrategy {
 
     @Override
     public FightActions getFightAction(Character character) {
-        logger.info("Choose fight action: ");
-        String line = scanner.nextLine();
+        logger.info("Choose fight action (strike, lunge, grapple): ");
+        String line = scanner.nextLine().toLowerCase();
 
         return switch(line) {
             case "strike" -> FightActions.STRIKE;
