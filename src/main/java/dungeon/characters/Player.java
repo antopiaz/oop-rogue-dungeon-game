@@ -37,73 +37,98 @@ public class Player extends Character {
                 .findFirst()
                 .orElse(this);
 
-
-        if (command.equals("fight")) { //TODO pick creature by name
-            Character creature = getCurrentLocation().getCreature(argument);
-            if (creature != null) {
-                FightActions fightAction = getFightAction();
-                FightActions foeFightAction = creature.getFightAction();
-
-                fight(selfInRoom,creature, fightAction, foeFightAction);
-                System.out.println("chose: " + fightAction);
-
-            }
-
-            System.out.println("Fought " + argument);
-        }
-        if (command.equals("move")){ //TODO add direction
-            DirectionType cardinality = null;
-            switch(argument){
-                case "east":
-                    cardinality = DirectionType.EAST;
-                    break;
-                case "north":
-                    cardinality = DirectionType.NORTH;
-                    break;
-                case "south":
-                    cardinality = DirectionType.SOUTH;
-                    break;
-                case "west":
-                    cardinality = DirectionType.WEST;
-                    break;
-            }
-            if(cardinality!=null){
-                move(cardinality);
-            }
-            System.out.println();
-            System.out.println("Moved " + argument);
-        }
-        if (command.equals("eat")) { //TODO pick food by name
-            IArtifact food = getCurrentLocation().getFood(argument);
-            if (food != null) {
-                eat(food);
-            }
-            System.out.println("Ate "  + argument);
-        }
-
-        if (command.equals("wear")) {
-            IArtifact armor = getCurrentLocation().getArmor(argument);
-            if (armor != null) {
-                wear(armor);
-
-            }
-            System.out.println("Wearing "  + argument);
-        }
-
-        if(command.equals("equip")){
-            IArtifact weapon = getCurrentLocation().getWeapon(argument);
-            if(weapon != null){
-                equip(weapon);
-            }
-            System.out.println("Equipped "  + argument);
-        }
-
-        if(command.equals("obtain")){
-            IArtifact treasure = getCurrentLocation().getTreasure(argument);
-            if(treasure != null){
-                obtain(treasure);
-            }
+        switch (command) {
+            case "fight":
+                handleFight(argument, selfInRoom);
+                break;
+            case "move":
+                handleMove(argument);
+                break;
+            case "eat":
+                handleEat(argument);
+                break;
+            case "wear":
+                handleWear(argument);
+                break;
+            case "equip":
+                handleEquip(argument);
+                break;
+            case "obtain":
+                handleObtain(argument);
+                break;
+            default:
+                logger.info("Invalid command");
         }
     }
+
+    private void handleFight(String argument, Character selfInRoom) {
+        Character creature = getCurrentLocation().getCreature(argument);
+        if (creature != null) {
+            FightActions fightAction = getFightAction();
+            FightActions foeFightAction = creature.getFightAction();
+            fight(selfInRoom, creature, fightAction, foeFightAction);
+        }
+        logger.info("Fought " + argument);
+    }
+
+    private void handleMove(String argument) {
+        DirectionType cardinality = null;
+        switch(argument){
+            case "east":
+                cardinality = DirectionType.EAST;
+                break;
+            case "north":
+                cardinality = DirectionType.NORTH;
+                break;
+            case "south":
+                cardinality = DirectionType.SOUTH;
+                break;
+            case "west":
+                cardinality = DirectionType.WEST;
+                break;
+        }
+        if(cardinality!=null){
+            if(getCurrentLocation().hasNeighbor(cardinality)){
+                move(cardinality);
+                logger.info("Moved " + argument);
+            }
+            logger.info("No neighbor found to the " + argument);
+        }
+
+    }
+
+    private void handleEat(String argument) {
+        IArtifact food = getCurrentLocation().getFood(argument);
+        if (food != null) {
+            eat(food);
+        }
+    }
+
+    private void handleWear(String argument) {
+        IArtifact armor = getCurrentLocation().getArmor(argument);
+        if (armor != null) {
+            wear(armor);
+        }
+        logger.info("Wearing "  + argument);
+    }
+
+    private void handleEquip(String argument) {
+        IArtifact weapon = getCurrentLocation().getWeapon(argument);
+        if(weapon != null){
+            equip(weapon);
+        }
+        logger.info("Equipped "  + argument);
+    }
+
+    private void handleObtain(String argument) {
+        IArtifact treasure = getCurrentLocation().getTreasure(argument);
+        if(treasure != null){
+            obtain(treasure);
+        }
+        logger.info("Obtained "  + argument);
+    }
+
+
+
 
 }

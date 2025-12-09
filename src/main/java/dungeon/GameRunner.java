@@ -2,24 +2,19 @@ package polymorphia;
 
 import java.util.Scanner;
 
-import polymorphia.characters.Player;
-import polymorphia.characters.Character;
-import polymorphia.maze.Maze;
-import polymorphia.maze.Room;
-import polymorphia.strategy.HumanStrategy;
 
 public class GameRunner {
     
     public static void gameRuner(String[] args) {
         Scanner scanner = new Scanner(System.in);
         
-        Maze maze = ; // TODO: Create maze with setup
-        
-        Polymorphia game = new Polymorphia(maze, scanner);
-        
-        displayWelcome();
-        
-        game.play();
+//        Maze maze = ; // TODO: Create maze with setup
+//
+//        Polymorphia game = new Polymorphia(maze, scanner);
+//
+//        displayWelcome();
+//
+//        game.play();
         
         scanner.close();
     }

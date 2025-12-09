@@ -41,7 +41,7 @@ public class GameTest {
 
     @Test
     public void testMove() {
-        Scanner scanner = new Scanner("move north\nmove east\nmove south\nmove west\nobtain treasure");
+        Scanner scanner = new Scanner("move south\nmove east\nmove south\nmove west\nobtain treasure");
         IArtifact treasure = artifactFactory.createTreasure("treasure");
         Player player = new Player("Hero", scanner, new HumanStrategy(scanner));
         Maze maze = Maze.getNewBuilder(roomFactory)
@@ -123,6 +123,5 @@ public class GameTest {
         assert game.isOver();
         assert !game.hasLivingAdventurers() || !game.hasLivingCreatures();
     }
-
 
 }

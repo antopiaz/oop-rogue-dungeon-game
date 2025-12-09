@@ -9,20 +9,19 @@ import java.util.stream.IntStream;
 public class ArtifactFactory {
     private static final Random random = new Random();
 
-    public static double DEFAULT_VALUE = 0.0;
+    private static final double DEFAULT_VALUE = 0.0;
     private static final double MINIMUM_VALUE = 1.0;
     private static final double MAXIMUM_VALUE = 2.0;
 
     private static final String[] FOOD_NAMES = new String[]{
-            "cupcake", "apple", "banana", "steak", "salad", "fries", "burger", "pizza", "eggs",
-            "bacon", "muffin", "donut", "chicken", "pasta", "rice", "sushi", "taco", "burrito",
-            "nachos", "chips"};
+            "cake", "apple", "orange", "steak", "banana", "burger", "pizza", "calzone",
+            "bacon", "donut", };
 
     public static final String[] ARMOR_NAMES = new String[]{
-            "leather", "chainmail", "plate", "iron", "steel", "mithril", "dragon hide", "titanium", "platinum", "gold"};
+            "leather", "chainmail", "plate", "iron", "steel", "mithril", "gold", "adamantium"};
 
     public static final String[] WEAPON_NAMES = new String[]{
-            "sword", "axe", "spear", "dagger", "hatchet", "halberd", "mace", "saber", "sling", "bomb", "these hands", "banana gun", "AK-47"};
+           "dagger", "halberd", "mace", "saber", "staff", "katana", "bow", "greatsword", "sword", "axe", "spear"};
 
     private static final Map<ArtifactType, String[]> NAMES = new HashMap<>();
 
@@ -76,20 +75,8 @@ public class ArtifactFactory {
         return create(ArtifactType.Food, name, getRandomValue());
     }
 
-    public IArtifact createFood(String name, double value) {
-        return create(ArtifactType.Food, name, value);
-    }
-
-    public IArtifact createArmor(String name) {
-        return create(ArtifactType.Armor, name, DEFAULT_VALUE);
-    }
-
     public IArtifact createArmor(String name, double strength) {
         return create(ArtifactType.Armor, name, strength);
-    }
-
-    public IArtifact createWeapon(String name) {
-        return create(ArtifactType.Weapon, name, DEFAULT_VALUE);
     }
 
     public IArtifact createWeapon(String name, double strength) {

@@ -8,8 +8,8 @@ public class Weapon extends Artifact {
 
     @Override
     public String toString() {
-        String formattedStrength = String.format("%.2f", getValue());
-        return "weapon " + getName() + "(strength:" + formattedStrength + ")";
+        String attack = String.format("%.2f", getValue());
+        return "weapon " + getName() + "(strength:" + attack + ")";
     }
 
 }

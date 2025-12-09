@@ -6,7 +6,6 @@ import dungeon.maze.DirectionType;
 import dungeon.artifacts.IArtifact;
 import dungeon.maze.Room;
 import dungeon.strategy.PlayStrategy;
-import java.util.Random;
 
 public abstract class Character {
     static Logger logger = org.slf4j.LoggerFactory.getLogger(Character.class);
@@ -14,10 +13,7 @@ public abstract class Character {
     protected String name;
     private Double health;
     PlayStrategy strategy;
-
     private Room currentLocation;
-
-    Random random = new Random();
 
     public Character(String name, Double health, PlayStrategy playStrategy) {
         this.name = name;
@@ -121,13 +117,11 @@ public abstract class Character {
         return strategy.getFightAction(this);
     }
 
-
     public void doAction() {
         strategy.doAction(this, getCurrentLocation());
     }
 
     public void move(DirectionType direction) {
-        assert (getCurrentLocation().hasNeighbor(direction));
         Room destinationRoom = getCurrentLocation().getNeighbor(direction);
         String eventMessage = String.format("%s moved %s from %s to %s", getName(), direction, getCurrentLocation().getName(), destinationRoom.getName());
         logger.info(eventMessage);

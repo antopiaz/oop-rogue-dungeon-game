@@ -15,13 +15,13 @@ public class HumanStrategy extends PlayStrategy {
 
     @Override
     public FightActions getFightAction(Character character) {
-        System.out.print("Fight action: ");
+        System.out.print("Choose fight action: ");
         String line = scanner.nextLine();
 
         return switch(line) {
             case "strike" -> FightActions.STRIKE;
             case "lunge" -> FightActions.LUNGE;
-            case "block" -> FightActions.GRAPPLE;
+            case "grapple" -> FightActions.GRAPPLE;
             default -> FightActions.STRIKE;
         };
     }
