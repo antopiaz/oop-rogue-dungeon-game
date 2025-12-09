@@ -15,7 +15,7 @@
 
     # File appender
     <appender name="File_Output" class="ch.qos.logback.core.FileAppender">
-        <file>polymorphia.log</file>
+        <file>dungeon.log</file>
         <append>false</append>
         <encoder>
             <pattern>%msg</pattern>
@@ -27,11 +27,11 @@
         <appender-ref ref="File_Output"/>
     </root>
 
-    <logger name="polymorphia" level="INFO" additivity="false">
+    <logger name="dungeon" level="INFO" additivity="false">
         <appender-ref ref="Game_Status_Yellow"/>
     </logger>
 
-    <logger name="polymorphia.Polymorphia" level="INFO" additivity="false">
+    <logger name="dungeon.Dungeon" level="INFO" additivity="false">
         <!--        <appender-ref ref="Game_Status_Cyan"/>-->
         <appender-ref ref="File_Output"/>
     </logger>
