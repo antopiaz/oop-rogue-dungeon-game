@@ -75,18 +75,8 @@ public class Dungeon {
             playTurn();
             logger.info(this.toString());
         }
-        String eventMessage = String.format("The game ended after %s turns", turnCount);
 
         logger.info("The game ended after {} turns.\n", turnCount);
-        String eventDescription;
-        if (hasLivingAdventurers()) {
-            eventDescription = "The adventurers won! Left standing are: " + getAdventurerNames() + "\n";
-        } else if (hasLivingCreatures()) {
-            eventDescription = "The creatures won. Boo! Left standing are: " + getCreatureNames() + "\n";
-        } else {
-            eventDescription = "No team won! Everyone died!\n";
-        }
-        logger.info(eventDescription);
     }
 
     public void displayUI() {
@@ -168,17 +158,5 @@ public class Dungeon {
 
         // Print out string representation
         System.out.println(sb.toString());
-    }
-
-    private String getAdventurerNames() {
-        return String.join(", ", getLivingCharacters().stream().map(Object::toString).toList());
-    }
-
-    private String getCreatureNames() {
-        return String.join(", ", getLivingCreatures().stream().map(Object::toString).toList());
-    }
-
-    private List<Character> getLivingCreatures() {
-        return maze.getLivingCreatures();
     }
 }

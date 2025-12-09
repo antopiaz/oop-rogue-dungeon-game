@@ -28,25 +28,13 @@ public class Maze {
     public Boolean hasLivingAdventurers() {
         return rooms.stream().anyMatch(Room::hasLivingAdventurers);
     }
-
-    public List<Character> getLivingCreatures() {
-        List<Character> creatures = new ArrayList<>();
-        for (Room room : rooms) {
-            creatures.addAll(room.getLivingCreatures());
-        }
-        return creatures;
-    }
-
+    
     public List<Character> getLivingCharacters() {
         List<Character> characters = new ArrayList<>();
         for (Room room : rooms) {
             characters.addAll(room.getLivingCharacters());
         }
         return characters;
-    }
-
-    public boolean hasLivingCharacters() {
-        return getLivingCharacters().stream().anyMatch(Character::isAlive);
     }
 
     public List<Character> getLivingAdventurers() {
