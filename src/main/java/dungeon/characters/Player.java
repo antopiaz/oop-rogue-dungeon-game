@@ -46,10 +46,10 @@ public class Player extends Character {
                 handleEat(argument);
                 break;
             case "wear":
-                handleWear(argument, selfInRoom);
+                handleWear(argument);
                 break;
             case "equip":
-                handleEquip(argument, selfInRoom);
+                handleEquip(argument);
                 break;
             case "obtain":
                 handleObtain(argument);
@@ -107,23 +107,18 @@ public class Player extends Character {
         }
     }
 
-    private void handleWear(String argument, Character selfInRoom) {
+    private void handleWear(String argument) {
         IArtifact armor = getCurrentLocation().getArmor(argument);
         if (armor != null) {
-            selfInRoom.wear(armor);
+            wear(armor);
         }
         logger.info("Wearing "  + argument);
     }
 
-    private void handleEquip(String argument, Character selfInRoom) {
+    private void handleEquip(String argument) {
         IArtifact weapon = getCurrentLocation().getWeapon(argument);
         if(weapon != null){
-            selfInRoom.equip(weapon);
-            Character newVersion = new WeaponizedCharacter(this, weapon);
-            getCurrentLocation().alterCharacter(this, newVersion);
-
-            logger.info("Equipped " + argument);
-
+            equip(weapon);
         }
         logger.info("Equipped "  + argument);
     }

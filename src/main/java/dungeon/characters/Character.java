@@ -146,13 +146,27 @@ public abstract class Character {
     }
 
     public void wear(IArtifact armor) {
-        Character armoredCharacter = CharacterFactory.createArmoredCharacter(this, armor);
-        currentLocation.alterCharacter(this, armoredCharacter);
+
+        Character current = currentLocation.getLivingCharacters()
+                .stream()
+                .filter(c -> c.getName().contains(this.name))
+                .findFirst()
+                .orElse(this);
+
+        Character armoredCharacter = CharacterFactory.createArmoredCharacter(current, armor);
+        currentLocation.alterCharacter(current, armoredCharacter);
     }
 
     public void equip(IArtifact weapon) {
-        Character weaponizedCharacter = CharacterFactory.createWeaponizedCharacter(this, weapon);
-        currentLocation.alterCharacter(this, weaponizedCharacter);
+
+        Character current = currentLocation.getLivingCharacters()
+                .stream()
+                .filter(c -> c.getName().contains(this.name))
+                .findFirst()
+                .orElse(this);
+
+        Character weaponizedCharacter = CharacterFactory.createWeaponizedCharacter(current, weapon);
+        currentLocation.alterCharacter(current, weaponizedCharacter);
     }
 
     public void setStrategy(PlayStrategy strategy) {

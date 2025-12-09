@@ -20,4 +20,10 @@ public class WeaponizedCharacter extends CharacterDecorator {
         return decoratedCharacter.dealFightDamage(baseDamage + weapon.getValue());
     }
 
+    @Override
+    public void loseFightDamage(double fightDamage) {
+        decoratedCharacter.loseFightDamage(fightDamage);
+    }
+
+
 }

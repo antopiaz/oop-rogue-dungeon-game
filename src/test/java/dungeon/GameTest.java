@@ -80,11 +80,13 @@ public class GameTest {
 
     @Test
     public void testArmor() {
-        Scanner scanner = new Scanner("wear platemail\nfight attacker 1 \ngrapple\nfight attacker 1 \ngrapple\nfight attacker 1 \ngrapple\nfight attacker 1 \ngrapple\nfight attacker 1 \ngrapple");
+        Scanner scanner = new Scanner("wear platemail\nwear iron\nequip sword\nfight attacker 1 \ngrapple\nfight attacker 1 \ngrapple\nfight attacker 1 \ngrapple\nfight attacker 1 \ngrapple\nfight attacker 1 \ngrapple\nfight attacker 1 \ngrapple");
 
         Player player = new Player("Hero", scanner, new HumanStrategy(scanner));
         IArtifact food = artifactFactory.createFood("apple");
         IArtifact armor = artifactFactory.createArmor("platemail",1.0);
+        IArtifact ironArmor = artifactFactory.createArmor("iron",0.1);
+        IArtifact weapon = artifactFactory.createWeapon("sword", 1.0);
         IArtifact treasure = artifactFactory.createTreasure("treasure");
 
         Maze maze = Maze.getNewBuilder(roomFactory)
@@ -93,7 +95,9 @@ public class GameTest {
                 .add(characterFactory.createAttacker("attacker 1", DEFAULT_HEALTH))
                 .addArtifact(food)
                 .addArtifact(armor)
+                .addArtifact(ironArmor)
                 .addArtifact(treasure)
+                .addArtifact(weapon)
                 .build();
         logger.info(maze.toString());
         Dungeon game = new Dungeon(maze);
@@ -104,10 +108,11 @@ public class GameTest {
 
     @Test
     public void testWeapons() {
-        Scanner scanner = new Scanner("equip sword\nfight attacker 1 \nlunge\nfight attacker 1 \nlunge\nfight attacker 1 \nlunge\nfight attacker 1 \nlunge");
+        Scanner scanner = new Scanner("equip sword\nwear platemail\nfight attacker 1 \nlunge\nfight attacker 1 \nlunge\nfight attacker 1 \nlunge\nfight attacker 1 \nlunge");
 
         Player player = new Player("Hero", scanner, new HumanStrategy(scanner));
         IArtifact food = artifactFactory.createFood("apple");
+        IArtifact armor = artifactFactory.createArmor("platemail",1.0);
         IArtifact weapon = artifactFactory.createWeapon("sword", 1.0);
         IArtifact treasure = artifactFactory.createTreasure("gold coins");
         Maze maze = Maze.getNewBuilder(roomFactory)
@@ -117,6 +122,7 @@ public class GameTest {
                 .addArtifact(food)
                 .addArtifact(weapon)
                 .addArtifact(treasure)
+                .addArtifact(armor)
                 .build();
         logger.info(maze.toString());
         Dungeon game = new Dungeon(maze);
