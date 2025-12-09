@@ -19,7 +19,7 @@ public class Dungeon {
     Integer turnCount = 0;
     final Random rand = new Random();
 
-    public Dungeon(Maze maze, Scanner scanner) {
+    public Dungeon(Maze maze) {
         this.maze = maze;
     }
 
@@ -180,17 +180,5 @@ public class Dungeon {
 
     private List<Character> getLivingCreatures() {
         return maze.getLivingCreatures();
-    }
-
-    public Character getWinner() {
-        if (!isOver() || !hasLivingCharacters()) {
-            // No one has won yet, or no one won -- all died
-            return null;
-        }
-        return getLivingCharacters().getFirst();
-    }
-
-    private boolean hasLivingCharacters() {
-        return maze.hasLivingCharacters();
     }
 }

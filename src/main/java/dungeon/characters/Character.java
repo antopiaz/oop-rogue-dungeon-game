@@ -89,18 +89,22 @@ public abstract class Character {
         return false;
     }
 
-    public Boolean fight(Character self, Character foe, int myFightAction, int foeFightAction) {
+    public Boolean fight(Character self, Character foe, FightActions myFightAction, FightActions foeFightAction) {
         logger.info(self.getName() + " is fighting " + foe);
 
         logger.info(self.getName() + " chose " + myFightAction);
         logger.info(foe + " chose " + foeFightAction);
         double finalDamage;
         boolean won = false;
-        if ((myFightAction==1 && foeFightAction == 0) || (myFightAction==2 && foeFightAction == 1)|| ( myFightAction == 0 && foeFightAction==2)) {
+        if ((myFightAction==FightActions.LUNGE && foeFightAction == FightActions.STRIKE)   ||
+                (myFightAction==FightActions.GRAPPLE && foeFightAction == FightActions.LUNGE)||
+                (myFightAction == FightActions.STRIKE && foeFightAction==FightActions.GRAPPLE)) {
             won = true;
             finalDamage = self.dealFightDamage(3.0);
             foe.loseFightDamage(finalDamage);
-        } else if ((myFightAction==0 && foeFightAction == 1) || (myFightAction==1 && foeFightAction == 2)|| ( myFightAction == 2 && foeFightAction==0)) {
+        } else if ((myFightAction==FightActions.STRIKE && foeFightAction == FightActions.LUNGE) ||
+                  (myFightAction==FightActions.LUNGE && foeFightAction == FightActions.GRAPPLE)||
+                  (myFightAction ==FightActions.GRAPPLE && foeFightAction==FightActions.STRIKE)) {
             finalDamage = foe.dealFightDamage(3.0);
             self.loseFightDamage(finalDamage);
         }
@@ -113,7 +117,7 @@ public abstract class Character {
         return won;
     }
 
-    public int getFightAction() {
+    public FightActions getFightAction() {
         return strategy.getFightAction(this);
     }
 

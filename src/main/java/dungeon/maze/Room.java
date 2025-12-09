@@ -6,8 +6,6 @@ import dungeon.artifacts.IArtifact;
 import dungeon.characters.Character;
 
 public class Room {
-    static private final Random rand = new Random();
-
     private final String name;
     private final Map<DirectionType, Room> neighbors = new HashMap<>();
     private final List<Character> characters = new ArrayList<>();

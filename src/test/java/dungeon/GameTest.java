@@ -20,7 +20,7 @@ public class GameTest {
 
     @Test
     public void testFight() {
-        Scanner scanner = new Scanner("tello\neat apple\nfight ogre 1 \n0\nfight ogre 1 \n0\nfight ogre 1 \n0");
+        Scanner scanner = new Scanner("eat apple\nfight ogre 1 \nstrike\nfight ogre 1 \nstrike\nfight ogre 1 \nstrike\nfight ogre 1 \nstrike");
 
         Player player = new Player("Hero", scanner, new HumanStrategy(scanner));
         IArtifact food = artifactFactory.createFood("apple");
@@ -33,7 +33,7 @@ public class GameTest {
                 .addArtifact(treasure)
                 .build();
         logger.info(maze.toString());
-        Dungeon game = new Dungeon(maze, scanner);
+        Dungeon game = new Dungeon(maze);
         game.play();
         assert game.isOver();
         assert !game.hasLivingAdventurers() || !game.hasLivingCreatures();
@@ -41,24 +41,24 @@ public class GameTest {
 
     @Test
     public void testMove() {
-        Scanner scanner = new Scanner("tello\nmove north\nmove east\nmove south\nmove west\nobtain treasure");
+        Scanner scanner = new Scanner("move north\nmove east\nmove south\nmove west\nobtain treasure");
         IArtifact treasure = artifactFactory.createTreasure("treasure");
         Player player = new Player("Hero", scanner, new HumanStrategy(scanner));
         Maze maze = Maze.getNewBuilder(roomFactory)
                 .createDungeon(2,2)
-                .add(characterFactory.createCreature("Ogre"))
+                .add(characterFactory.createCreature("Ogre", 5.0))
                 .addArtifact(treasure, "Room (0,0)")
                 .addCharacterToStart(player)
                 .build();
         logger.info(maze.toString());
-        Dungeon game = new Dungeon(maze, scanner);
+        Dungeon game = new Dungeon(maze);
         game.play();
         assert true;
     }
 
     @Test
     public void testAttacker() {
-        Scanner scanner = new Scanner("tello\neat apple\nfight attacker 1 \n1\nfight attacker 1 \n1\nfight attacker 1 \n1");
+        Scanner scanner = new Scanner("eat apple\nfight attacker 1 \nlunge\nfight attacker 1 \nlunge\nfight attacker 1 \nlunge");
 
         Player player = new Player("Hero",scanner,  new HumanStrategy(scanner));
         IArtifact food = artifactFactory.createFood("apple");
@@ -66,12 +66,12 @@ public class GameTest {
         Maze maze = Maze.getNewBuilder(roomFactory)
                 .createDungeon(1,1)
                 .add(player)
-                .add(characterFactory.createAttacker("attacker 1"))
+                .add(characterFactory.createAttacker("attacker 1", 5.0))
                 .addArtifact(food)
                 .addArtifact(treasure)
                 .build();
         System.out.println(maze.toString());
-        Dungeon game = new Dungeon(maze, scanner);
+        Dungeon game = new Dungeon(maze);
         game.play();
         assert game.isOver();
         assert !game.hasLivingAdventurers() || !game.hasLivingCreatures();
@@ -79,7 +79,7 @@ public class GameTest {
 
     @Test
     public void testArmor() {
-        Scanner scanner = new Scanner("tello\nwear platemail\nfight attacker 1 \n2\nfight attacker 1 \n2\nfight attacker 1 \n2\nfight attacker 1 \n2\nfight attacker 1 \n2");
+        Scanner scanner = new Scanner("wear platemail\nfight attacker 1 \ngrapple\nfight attacker 1 \ngrapple\nfight attacker 1 \ngrapple\nfight attacker 1 \ngrapple\nfight attacker 1 \ngrapple");
 
         Player player = new Player("Hero", scanner, new HumanStrategy(scanner));
         IArtifact food = artifactFactory.createFood("apple");
@@ -89,13 +89,13 @@ public class GameTest {
         Maze maze = Maze.getNewBuilder(roomFactory)
                 .createDungeon(1,1)
                 .add(player)
-                .add(characterFactory.createAttacker("attacker 1"))
+                .add(characterFactory.createAttacker("attacker 1", 5.0))
                 .addArtifact(food)
                 .addArtifact(armor)
                 .addArtifact(treasure)
                 .build();
         System.out.println(maze.toString());
-        Dungeon game = new Dungeon(maze, scanner);
+        Dungeon game = new Dungeon(maze);
         game.play();
         assert game.isOver();
         assert !game.hasLivingAdventurers() || !game.hasLivingCreatures();
@@ -103,7 +103,7 @@ public class GameTest {
 
     @Test
     public void testWeapons() {
-        Scanner scanner = new Scanner("tello\nequip sword\nfight attacker 1 \n1\nfight attacker 1 \n1\nfight attacker 1 \n1\nfight attacker 1 \n1");
+        Scanner scanner = new Scanner("equip sword\nfight attacker 1 \nlunge\nfight attacker 1 \nlunge\nfight attacker 1 \nlunge\nfight attacker 1 \nlunge");
 
         Player player = new Player("Hero", scanner, new HumanStrategy(scanner));
         IArtifact food = artifactFactory.createFood("apple");
@@ -112,13 +112,13 @@ public class GameTest {
         Maze maze = Maze.getNewBuilder(roomFactory)
                 .createDungeon(1,1)
                 .add(player)
-                .add(characterFactory.createAttacker("attacker 1"))
+                .add(characterFactory.createAttacker("attacker 1",5.0))
                 .addArtifact(food)
                 .addArtifact(weapon)
                 .addArtifact(treasure)
                 .build();
         System.out.println(maze.toString());
-        Dungeon game = new Dungeon(maze, scanner);
+        Dungeon game = new Dungeon(maze);
         game.play();
         assert game.isOver();
         assert !game.hasLivingAdventurers() || !game.hasLivingCreatures();

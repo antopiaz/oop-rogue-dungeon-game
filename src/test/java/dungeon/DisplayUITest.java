@@ -29,7 +29,7 @@ public class DisplayUITest {
                 .add(player)
                 .build();
         System.out.println(maze.toString());
-        Dungeon game = new Dungeon(maze, scanner);
+        Dungeon game = new Dungeon(maze);
         game.displayUI();
         // assert game.isOver();
         // assert !game.hasLivingAdventurers() || !game.hasLivingCreatures();
@@ -45,12 +45,12 @@ public class DisplayUITest {
         Maze maze = Maze.getNewBuilder(roomFactory)
                 .createDungeon(1,1)
                 .add(player)
-                .add(characterFactory.createAttacker("attacker 1"))
+                .add(characterFactory.createAttacker("attacker 1", 5.0))
                 .addArtifact(food)
                 .addArtifact(armor)
                 .build();
         System.out.println(maze.toString());
-        Dungeon game = new Dungeon(maze, scanner);
+        Dungeon game = new Dungeon(maze);
         game.play();
         assert game.isOver();
         assert !game.hasLivingAdventurers() || !game.hasLivingCreatures();

@@ -8,40 +8,38 @@ import java.util.stream.IntStream;
 
 import dungeon.artifacts.IArtifact;
 import dungeon.strategy.AttackStrategy;
-import dungeon.strategy.DoNothingStrategy;
+import dungeon.strategy.DefensiveStrategy;
+import dungeon.strategy.DefaultStrategy;
 
 
 public class CharacterFactory {
     private static final Random random = new Random();
 
-    public static final String[] KNIGHT_NAMES = new String[]{"Sir Lancelot", "Lady Brienne", "King Arthur", "Sir Jamey", "Aragorn", "Isildur"};
-    public static final String[] COWARD_NAMES = new String[]{"Sir Robin", "Sir Scaredy Cat", "Lady Faints-a-lot", "Lady Runaway", "Sir Chicken", "Lady Hides-a-lot"};
-    public static final String[] GLUTTON_NAMES = new String[]{"Sir Eats-a-lot", "Sir Gobbles", "Lady Munches", "Lady Snacks", "Sir Nibbles", "Lady Noshes"};
-    public static final String[] CREATURE_NAMES = new String[]{"Dragon", "Ogre", "Orc", "Shelob", "Troll", "Evil Wizard"};
-    public static final String[] DEMON_NAMES = new String[]{"Satan", "Beelzebub", "Devil", "Incubus", "Lucifer", "Succubus"};
+    public static final String[] CREATURE_NAMES = new String[]{"Ogre", "Orc", "Goblin", "Troll", "Zombie", "Skeleton", "Rat", "Ghoul", "Hobgoblin", "Shadow", "Slime"};
+    public static final String[] DEFENDER_NAMES = new String[]{"Dwarf", "Dullahan", "Corrupted Paladin", "Hammerer", "Giant"};
+
 
     public static final Map<String, String[]> NAMES = new HashMap<>();
 
     static {
-        NAMES.put("Knight", KNIGHT_NAMES);
-        NAMES.put("Coward", COWARD_NAMES);
-        NAMES.put("Glutton", GLUTTON_NAMES);
         NAMES.put("Creature", CREATURE_NAMES);
-        NAMES.put("Demon", DEMON_NAMES);
+        NAMES.put("Defender", DEFENDER_NAMES);
     }
 
-    static final Double DEFAULT_CREATURE_INITIAL_HEALTH = 5.0;
+    static final Double DEFAULT_HEALTH_LOWER_BOUND = 5.0;
+    static final Double DEFAULT_HEALTH_UPPER_BOUND = 30.0;
 
-    public Character createCreature(String name) {
-        return createCreature(name, DEFAULT_CREATURE_INITIAL_HEALTH);
-    }
 
     public Character createCreature(String name, Double initialHealth) {
-        return new Creature(name, initialHealth, new DoNothingStrategy());
+        return new Creature(name, initialHealth, new DefaultStrategy());
     }
 
-    public Character createAttacker(String name) {
-        return new Creature(name, DEFAULT_CREATURE_INITIAL_HEALTH, new AttackStrategy());
+    public Character createAttacker(String name, Double initialHealth) {
+        return new Creature(name, initialHealth, new AttackStrategy());
+    }
+
+    public Character createDefender(String name, Double initialHealth) {
+        return new Creature(name, initialHealth, new DefensiveStrategy());
     }
 
     public static Character createArmoredCharacter(Character decoratedCharacter, IArtifact armor) {
@@ -58,10 +56,29 @@ public class CharacterFactory {
                 .toList();
     }
 
+    public List<Character> createAttackers(int numAttackers) {
+        return IntStream.range(0, numAttackers)
+                .mapToObj(unused -> createAttacker())
+                .toList();
+    }
+
+    public List<Character> createDefenders(int numAttackers) {
+        return IntStream.range(0, numAttackers)
+                .mapToObj(unused -> createDefender())
+                .toList();
+    }
+
 
     private Character createCreature() {
-        return createCreature(getRandomName("Creature"));
+        return createCreature(getRandomName("Creature"), random.nextDouble(DEFAULT_HEALTH_LOWER_BOUND, DEFAULT_HEALTH_UPPER_BOUND));
     }
+    private Character createAttacker() {
+        return createAttacker(getRandomName("Creature"),random.nextDouble(DEFAULT_HEALTH_LOWER_BOUND, DEFAULT_HEALTH_UPPER_BOUND));
+    }
+    private Character createDefender() {
+        return createDefender(getRandomName("Defender"),random.nextDouble(DEFAULT_HEALTH_LOWER_BOUND, DEFAULT_HEALTH_UPPER_BOUND));
+    }
+
 
     private String getRandomName(String characterType) {
         String[] names = NAMES.get(characterType);

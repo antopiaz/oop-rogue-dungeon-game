@@ -41,8 +41,8 @@ public class Player extends Character {
         if (command.equals("fight")) { //TODO pick creature by name
             Character creature = getCurrentLocation().getCreature(argument);
             if (creature != null) {
-                int fightAction = getFightAction();
-                int foeFightAction = creature.getFightAction();
+                FightActions fightAction = getFightAction();
+                FightActions foeFightAction = creature.getFightAction();
 
                 fight(selfInRoom,creature, fightAction, foeFightAction);
                 System.out.println("chose: " + fightAction);
