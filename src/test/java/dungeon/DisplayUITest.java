@@ -29,7 +29,7 @@ public class DisplayUITest {
 
     @Test
     public void testArmor() {
-        Scanner scanner = new Scanner("wear platemail\nfight attacker 1 \ngrapple\nfight attacker 1 \ngrapple\nfight attacker 1 \ngrapple\nfight attacker 1 \ngrapple\nfight attacker 1 \ngrapple");
+        Scanner scanner = new Scanner("wear platemail\nfight attacker 1 \ngrapple\nfight attacker 1 \ngrapple\nfight attacker 1 \ngrapple\nfight attacker 1 \ngrapple\nfight attacker 1\ngrapple\nfight attacker 1\ngrapple\nfight attacker 1\ngrapple\nfight attacker 1\ngrapple");
 
         Player player = new Player("Hero", scanner, new HumanStrategy(scanner));
         IArtifact food = artifactFactory.createFood("apple");
