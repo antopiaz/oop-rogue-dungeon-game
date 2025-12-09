@@ -167,22 +167,22 @@ public class GameFacade {
     }
 
     private void printWelcomeMessage() {
-        System.out.println("╔════════════════════════════════════════╗");
-        System.out.println("║      WELCOME TO JAVA GUYS DUNGEON!     ║");
-        System.out.println("╚════════════════════════════════════════╝");
-        System.out.println();
+        logger.info("╔════════════════════════════════════════╗");
+        logger.info("║      WELCOME TO JAVA GUYS DUNGEON!     ║");
+        logger.info("╚════════════════════════════════════════╝");
+        logger.info("\n");
         logger.info("Game started with maze:\n" + dungeon.maze.toString());
     }
 
     public static void printInstructions() {
-        System.out.println("\n=== HELP ===");
-        System.out.println("help - To see commands again");
-        System.out.println("fight <enemy>  - Attack an enemy, (strike, lunge, grapple)");
-        System.out.println("move <direction> - Move (north/south/east/west)");
-        System.out.println("eat <food>     - Consume food");
-        System.out.println("wear <armor>   - Put on armor");
-        System.out.println("equip <weapon> - Equip a weapon");
-        System.out.println("obtain <item>  - Pick up treasure");
-        System.out.println("===============\n");
+        logger.info("\n=== HELP ===");
+        logger.info("help - To see commands again");
+        logger.info("fight <enemy>  - Attack an enemy, (strike, lunge, grapple)");
+        logger.info("move <direction> - Move (north/south/east/west)");
+        logger.info("eat <food>     - Consume food");
+        logger.info("wear <armor>   - Put on armor");
+        logger.info("equip <weapon> - Equip a weapon");
+        logger.info("obtain <item>  - Pick up treasure");
+        logger.info("===============\n");
     }
 }

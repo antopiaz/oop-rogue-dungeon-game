@@ -72,7 +72,6 @@ public class Dungeon {
             playTurn();
             logger.info(this.toString());
         }
-        // String eventMessage = String.format("The game ended after %s turns", turnCount);
 
         printGameOverMessage();
     }

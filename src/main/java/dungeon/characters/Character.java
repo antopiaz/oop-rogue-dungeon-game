@@ -44,10 +44,22 @@ public abstract class Character {
         return getName() + "(" + formattedHealth + ")";
     }
 
+    public Double getHealth() {
+        return health;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Boolean isAlive() {
+        return getHealth() > 0;
+    }
+
     void loseHealth(Double healthPoints) {
         if (health <= 0) {
             return;
-        }     // already dead, probably called for mandatory health loss for having a fight
+        }
 
         health -= healthPoints;
         if (health <= 0) {
@@ -60,17 +72,6 @@ public abstract class Character {
         health += healthPoints;
     }
 
-    public Double getHealth() {
-        return health;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Boolean isAlive() {
-        return getHealth() > 0;
-    }
 
     void loseFightDamage(double fightDamage) {
         loseHealth(fightDamage);

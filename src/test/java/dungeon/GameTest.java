@@ -21,7 +21,7 @@ public class GameTest {
     final static double DEFAULT_HEALTH = 5.0;
     @Test
     public void testFight() {
-        Scanner scanner = new Scanner("eat apple\nfight ogre 1 \nstrike\nfight ogre 1 \nstrike\nfight ogre 1 \nstrike\nfight ogre 1 \nstrike");
+        Scanner scanner = new Scanner("help\neat apple\nfight ogre 1 \nstrike\nfight ogre 1 \nstrike\nfight ogre 1 \nstrike\nfight ogre 1 \nstrike");
 
         Player player = new Player("Hero", scanner, new HumanStrategy(scanner));
         IArtifact food = artifactFactory.createFood("apple");
@@ -71,7 +71,7 @@ public class GameTest {
                 .addArtifact(food)
                 .addArtifact(treasure)
                 .build();
-        System.out.println(maze.toString());
+        logger.info(maze.toString());
         Dungeon game = new Dungeon(maze);
         game.play();
         assert game.isOver();
@@ -95,7 +95,7 @@ public class GameTest {
                 .addArtifact(armor)
                 .addArtifact(treasure)
                 .build();
-        System.out.println(maze.toString());
+        logger.info(maze.toString());
         Dungeon game = new Dungeon(maze);
         game.play();
         assert game.isOver();
@@ -118,7 +118,7 @@ public class GameTest {
                 .addArtifact(weapon)
                 .addArtifact(treasure)
                 .build();
-        System.out.println(maze.toString());
+        logger.info(maze.toString());
         Dungeon game = new Dungeon(maze);
         game.play();
         assert game.isOver();

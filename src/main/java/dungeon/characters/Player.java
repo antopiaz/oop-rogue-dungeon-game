@@ -21,7 +21,7 @@ public class Player extends Character {
     }
 
     public String[] getAction(){
-        System.out.print("> ");
+        logger.info("> ");
         String line = scanner.nextLine().trim();
         return line.split("\\s+", 2);
     }
@@ -56,6 +56,7 @@ public class Player extends Character {
                 break;
             case "help":
                 printInstructions();
+                break;
             default:
                 logger.info("Invalid command");
         }
