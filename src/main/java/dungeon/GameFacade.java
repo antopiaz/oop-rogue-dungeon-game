@@ -48,6 +48,7 @@ public class GameFacade {
                 .addArtifacts(artifactFactory.createFoodItems(25))
                 .addArtifacts(artifactFactory.createWeapons(10))
                 .addArtifacts(artifactFactory.createArmoredSuits(10))
+                .addArtifacts(artifactFactory.createTreasures(5))
                 .addArtifact(treasure)
                 .build();
         logger.info(maze.toString());

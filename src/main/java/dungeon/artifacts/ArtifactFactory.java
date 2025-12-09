@@ -23,12 +23,15 @@ public class ArtifactFactory {
     public static final String[] WEAPON_NAMES = new String[]{
            "dagger", "halberd", "mace", "saber", "staff", "katana", "bow", "greatsword", "sword", "axe", "spear"};
 
+    public static final String[] TREASURE_NAMES = new String[]{
+            "gold coins", "treasure chest", "dragon hoard", "gems", "diamonds", "magic items"};
     private static final Map<ArtifactType, String[]> NAMES = new HashMap<>();
 
     static {
         NAMES.put(ArtifactType.Food, FOOD_NAMES);
         NAMES.put(ArtifactType.Armor, ARMOR_NAMES);
         NAMES.put(ArtifactType.Weapon, WEAPON_NAMES);
+        NAMES.put(ArtifactType.Treasure, TREASURE_NAMES);
     }
 
     private static double getRandomValue() {
@@ -50,6 +53,10 @@ public class ArtifactFactory {
 
     public List<IArtifact> createWeapons(int numberOfItems) {
         return createArtifacts(ArtifactType.Weapon, numberOfItems);
+    }
+
+    public List<IArtifact> createTreasures(int numberOfItems) {
+        return createArtifacts(ArtifactType.Treasure, numberOfItems);
     }
 
     private List<IArtifact> createArtifacts(ArtifactType type, int numberOfItems) {

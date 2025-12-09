@@ -109,7 +109,7 @@ public class GameTest {
         Player player = new Player("Hero", scanner, new HumanStrategy(scanner));
         IArtifact food = artifactFactory.createFood("apple");
         IArtifact weapon = artifactFactory.createWeapon("sword", 1.0);
-        IArtifact treasure = artifactFactory.createTreasure("treasure");
+        IArtifact treasure = artifactFactory.createTreasure("gold coins");
         Maze maze = Maze.getNewBuilder(roomFactory)
                 .createDungeon(1,1)
                 .add(player)
