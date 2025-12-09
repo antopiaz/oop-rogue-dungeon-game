@@ -2,8 +2,10 @@ package dungeon.maze;
 
 import java.util.*;
 
-import dungeon.artifacts.IArtifact;
+import dungeon.artifacts.*;
 import dungeon.characters.Character;
+
+import static dungeon.artifacts.ArtifactType.Weapon;
 
 public class Room {
     private final String name;
@@ -112,7 +114,8 @@ public class Room {
 
     public IArtifact getArmor(String name) {
         IArtifact armor = artifacts.stream()
-                .filter(f -> f.getName().equalsIgnoreCase(name))
+                .filter(w -> w instanceof Armor)
+                .filter(w -> w.getName().equalsIgnoreCase(name))
                 .findAny().orElse(null);
         artifacts.remove(armor);
         return armor;
@@ -120,6 +123,7 @@ public class Room {
 
     public IArtifact getWeapon(String name) {
         IArtifact weapon = artifacts.stream()
+                .filter(w -> w instanceof Weapon)
                 .filter(w -> w.getName().equalsIgnoreCase(name))
                 .findAny().orElse(null);
         artifacts.remove(weapon);
@@ -128,6 +132,7 @@ public class Room {
 
     public IArtifact getFood(String name) {
         IArtifact food = artifacts.stream()
+                .filter(w -> w instanceof Food)
                 .filter(f -> f.getName().equalsIgnoreCase(name))
                 .findAny().orElse(null);
         artifacts.remove(food);
@@ -136,6 +141,7 @@ public class Room {
 
     public IArtifact getTreasure(String name) {
         IArtifact treasure = artifacts.stream()
+                .filter(w -> w instanceof Treasure)
                 .filter(t -> t.getName().equalsIgnoreCase(name))
                 .findAny().orElse(null);
         artifacts.remove(treasure);

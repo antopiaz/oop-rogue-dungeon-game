@@ -10,8 +10,8 @@ public class ArtifactFactory {
     private static final Random random = new Random();
 
     private static final double DEFAULT_VALUE = 0.0;
-    private static final double MINIMUM_VALUE = 1.0;
-    private static final double MAXIMUM_VALUE = 2.0;
+    private static final double MINIMUM_VALUE = 0.5;
+    private static final double MAXIMUM_VALUE = 2.5;
 
     private static final String[] FOOD_NAMES = new String[]{
             "cake", "apple", "orange", "steak", "banana", "burger", "pizza", "calzone",

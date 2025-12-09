@@ -34,7 +34,7 @@ public class GameFacade {
         Player player = new Player("Hero", scanner, new HumanStrategy(scanner));
         IArtifact treasure = artifactFactory.createTreasure("treasure");
         Maze maze = Maze.getNewBuilder(roomFactory)
-                .createDungeon(10,10)
+                .createDungeon(4,4)
                 .add(player)
                 .addCharacters(characterFactory.createCreatures(10))
                 .addCharacters(characterFactory.createAttackers(10))

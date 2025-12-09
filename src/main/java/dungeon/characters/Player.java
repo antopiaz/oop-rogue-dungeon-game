@@ -46,10 +46,10 @@ public class Player extends Character {
                 handleEat(argument);
                 break;
             case "wear":
-                handleWear(argument);
+                handleWear(argument, selfInRoom);
                 break;
             case "equip":
-                handleEquip(argument);
+                handleEquip(argument, selfInRoom);
                 break;
             case "obtain":
                 handleObtain(argument);
@@ -93,7 +93,9 @@ public class Player extends Character {
                 move(cardinality);
                 logger.info("Moved " + argument);
             }
-            logger.info("No neighbor found to the " + argument);
+            else{
+                logger.info("No neighbor found to the " + argument);
+            }
         }
 
     }
@@ -105,18 +107,23 @@ public class Player extends Character {
         }
     }
 
-    private void handleWear(String argument) {
+    private void handleWear(String argument, Character selfInRoom) {
         IArtifact armor = getCurrentLocation().getArmor(argument);
         if (armor != null) {
-            wear(armor);
+            selfInRoom.wear(armor);
         }
         logger.info("Wearing "  + argument);
     }
 
-    private void handleEquip(String argument) {
+    private void handleEquip(String argument, Character selfInRoom) {
         IArtifact weapon = getCurrentLocation().getWeapon(argument);
         if(weapon != null){
-            equip(weapon);
+            selfInRoom.equip(weapon);
+            Character newVersion = new WeaponizedCharacter(this, weapon);
+            getCurrentLocation().alterCharacter(this, newVersion);
+
+            logger.info("Equipped " + argument);
+
         }
         logger.info("Equipped "  + argument);
     }
