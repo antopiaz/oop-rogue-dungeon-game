@@ -21,7 +21,7 @@ public class DisplayUITest {
 
     @Test
     public void testEmptyRoom() {
-        Scanner scanner = new Scanner("tello\n");
+        Scanner scanner = new Scanner("Hello\n");
 
         Player player = new Player("Hero", scanner, new HumanStrategy(scanner));
         Maze maze = Maze.getNewBuilder(roomFactory)
@@ -37,17 +37,20 @@ public class DisplayUITest {
 
     @Test
     public void testArmor() {
-        Scanner scanner = new Scanner("tello\nfight attacker 1 \n2\nwear armor\nfight attacker 1 \n2\nfight attacker 1 \n2\nfight attacker 1 \n2");
+        Scanner scanner = new Scanner("wear platemail\nfight attacker 1 \ngrapple\nfight attacker 1 \ngrapple\nfight attacker 1 \ngrapple\nfight attacker 1 \ngrapple\nfight attacker 1 \ngrapple");
 
         Player player = new Player("Hero", scanner, new HumanStrategy(scanner));
         IArtifact food = artifactFactory.createFood("apple");
-        IArtifact armor = artifactFactory.createArmor("armor");
+        IArtifact armor = artifactFactory.createArmor("platemail",1.0);
+        IArtifact treasure = artifactFactory.createTreasure("treasure");
+
         Maze maze = Maze.getNewBuilder(roomFactory)
                 .createDungeon(1,1)
                 .add(player)
                 .add(characterFactory.createAttacker("attacker 1", 5.0))
                 .addArtifact(food)
                 .addArtifact(armor)
+                .addArtifact(treasure)
                 .build();
         System.out.println(maze.toString());
         Dungeon game = new Dungeon(maze);

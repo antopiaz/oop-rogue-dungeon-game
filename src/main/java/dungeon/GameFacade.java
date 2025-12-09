@@ -20,22 +20,44 @@ import java.util.Scanner;
 public class GameFacade {
 
     private final Maze maze;
-    Scanner scanner = new Scanner(System.in);
+    private Scanner scanner;
+    private final Logger logger = LoggerFactory.getLogger(GameFacade.class);
+    private final Random rand = new Random();
+    private int turnNum = 0;
     private boolean gameOver = false;
-    int turnNum = 0;
-    Logger logger = LoggerFactory.getLogger(GameFacade.class);
-    final Random rand = new Random();
-
 
     public GameFacade(Maze maze) {
         this.maze = maze;
+
+        Logger logger = org.slf4j.LoggerFactory.getLogger(GameFacade.class);
+
+        ArtifactFactory artifactFactory = new ArtifactFactory();
+        RoomFactory roomFactory = new RoomFactory();
+        CharacterFactory characterFactory = new CharacterFactory();
+
+        Scanner scanner = new Scanner(System.in);
+
+        Player player = new Player("Hero", scanner, new HumanStrategy(scanner));
+        IArtifact treasure = artifactFactory.createTreasure("treasure");
+        maze = Maze.getNewBuilder(roomFactory)
+                .createDungeon(10,10)
+                .add(player)
+                .addCharacters(characterFactory.createCreatures(10))
+                .addCharacters(characterFactory.createAttackers(10))
+                .addCharacters(characterFactory.createDefenders(10))
+                .addArtifacts(artifactFactory.createFoodItems(25))
+                .addArtifacts(artifactFactory.createWeapons(10))
+                .addArtifacts(artifactFactory.createArmoredSuits(10))
+                .addArtifact(treasure)
+                .build();
+        logger.info(maze.toString());
     }
 
     public void playTurn() {
         if (turnNum == 0) {
             logger.info("\nStarting Game\nYou can fight\nmove\neat\nwear\nequip\nobtain\nFor example fight ogre or eat apple etc.");
         }
-        turnNum += 1;
+        turnNum +=1;
 
         List<dungeon.characters.Character> characters = maze.getLivingCharacters();
         while (!characters.isEmpty()) {
@@ -48,33 +70,6 @@ public class GameFacade {
         }
         String eventMessage = String.format("Turn %s ended", turnNum);
         logger.info(eventMessage);
-    }
-
-    public void setUpGame() {
-        Logger logger = org.slf4j.LoggerFactory.getLogger(GameFacade.class);
-
-        ArtifactFactory artifactFactory = new ArtifactFactory();
-        RoomFactory roomFactory = new RoomFactory();
-        CharacterFactory characterFactory = new CharacterFactory();
-
-        Scanner scanner = new Scanner(System.in);
-
-        Player player = new Player("Hero", scanner, new HumanStrategy(scanner));
-        IArtifact treasure = artifactFactory.createTreasure("treasure");
-        Maze maze = Maze.getNewBuilder(roomFactory)
-                .createDungeon(10,10)
-                .add(player)
-                .addCharacters(characterFactory.createCreatures(10))
-                .addCharacters(characterFactory.createAttackers(10))
-                .addCharacters(characterFactory.createDefenders(10))
-                .addArtifacts(artifactFactory.createFoodItems(25))
-                .addArtifacts(artifactFactory.createWeapons(10))
-                .addArtifacts(artifactFactory.createArmoredSuits(10))
-                .addArtifact(treasure)
-                .build();
-        logger.info(maze.toString());
-        Dungeon game = new Dungeon(maze);
-        game.play();
     }
 
     public Boolean isOver() {
@@ -164,20 +159,5 @@ public class GameFacade {
 
         System.out.println(sb.toString());
     }
-
-    public void play() {
-        setUpGame();
-        while (!isOver()) {
-            displayUI();
-            playTurn();
-            logger.info(this.toString());
-        }
-        String eventMessage = String.format("The game ended after %s turns", turnNum);
-
-        logger.info("The game ended after {} turns.\n", turnNum);
-        String eventDescription = "PLACEHOLDER";
-        logger.info(eventDescription);
-    }
-
 
 }
