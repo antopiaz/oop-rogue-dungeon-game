@@ -1,17 +1,16 @@
 package dungeon.characters;
-import dungeon.maze.DirectionType;
-import dungeon.artifacts.IArtifact;
-import dungeon.maze.Room;
-import dungeon.strategy.PlayStrategy;
-
 import java.util.Scanner;
 
 import static dungeon.GameFacade.printInstructions;
+import dungeon.artifacts.IArtifact;
+import dungeon.maze.DirectionType;
+import dungeon.maze.Room;
+import dungeon.strategy.PlayStrategy;
 
 
 public class Player extends Character {
 
-    public static final double DEFAULT_HEALTH = 10.0;
+    public static final double DEFAULT_HEALTH = 30.0;
     private final Scanner scanner;
 
 

@@ -8,8 +8,8 @@ import java.util.stream.IntStream;
 
 import dungeon.artifacts.IArtifact;
 import dungeon.strategy.AttackStrategy;
-import dungeon.strategy.DefensiveStrategy;
 import dungeon.strategy.DefaultStrategy;
+import dungeon.strategy.DefensiveStrategy;
 
 
 public class CharacterFactory {
@@ -27,7 +27,7 @@ public class CharacterFactory {
     }
 
     static final Double DEFAULT_HEALTH_LOWER_BOUND = 5.0;
-    static final Double DEFAULT_HEALTH_UPPER_BOUND = 30.0;
+    static final Double DEFAULT_HEALTH_UPPER_BOUND = 20.0;
 
 
     public Character createCreature(String name, Double initialHealth) {

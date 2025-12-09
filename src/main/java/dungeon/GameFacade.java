@@ -1,5 +1,6 @@
 package dungeon;
 
+import java.util.Random;
 import java.util.Scanner;
 
 import org.slf4j.Logger;
@@ -20,6 +21,16 @@ public class GameFacade {
     private final Dungeon dungeon;
     private final Scanner scanner;
     private static final Logger logger = LoggerFactory.getLogger(GameFacade.class);
+    private static final Random random = new Random();
+
+    private static final int MAZE_MIN_WIDTH_LENGTH = 2;
+    private static final int MAZE_MAX_WIDTH_LENGTH = 6;
+    private static final int MIN_NUMBER_OF_ENEMIES = 5;
+    private static final int MAX_NUMBER_OF_ENEMIES = 10;
+    private static final int MIN_NUMBER_OF_FOOD_ITEMS = 15;
+    private static final int MAX_NUMBER_OF_FOOD_ITEMS = 25;
+    private static final int DEFAULT_NUMBER_OF_ARMOR_AND_WEAPONS = 10;
+    private static final int DEFAULT_NUMBER_OF_TREASURE_ITEMS = 5;
 
     private GameFacade(Dungeon dungeon, Scanner scanner) {
         this.dungeon = dungeon;
@@ -34,21 +45,33 @@ public class GameFacade {
 
         Player player = new Player("Hero", scanner, new HumanStrategy(scanner));
         Maze maze = Maze.getNewBuilder(roomFactory)
-                .createDungeon(4,4)
+                .createDungeon(randomDimension(), randomDimension())
                 .add(player)
-                .addCharacters(characterFactory.createCreatures(10))
-                .addCharacters(characterFactory.createAttackers(10))
-                .addCharacters(characterFactory.createDefenders(10))
-                .addArtifacts(artifactFactory.createFoodItems(25))
-                .addArtifacts(artifactFactory.createWeapons(10))
-                .addArtifacts(artifactFactory.createArmoredSuits(10))
-                .addArtifacts(artifactFactory.createTreasures(5))
+                .addCharacters(characterFactory.createCreatures(randomEnemyCount()))
+                .addCharacters(characterFactory.createAttackers(randomEnemyCount()))
+                .addCharacters(characterFactory.createDefenders(randomEnemyCount()))
+                .addArtifacts(artifactFactory.createFoodItems(randomFoodCount()))
+                .addArtifacts(artifactFactory.createWeapons(DEFAULT_NUMBER_OF_ARMOR_AND_WEAPONS))
+                .addArtifacts(artifactFactory.createArmoredSuits(DEFAULT_NUMBER_OF_ARMOR_AND_WEAPONS))
+                .addArtifacts(artifactFactory.createTreasures(DEFAULT_NUMBER_OF_TREASURE_ITEMS))
                 .build();
 
         logger.info(maze.toString());
 
         Dungeon dungeon = new Dungeon(maze);
         return new GameFacade(dungeon, scanner);
+    }
+
+    private static int randomDimension() {
+        return random.nextInt(MAZE_MIN_WIDTH_LENGTH, MAZE_MAX_WIDTH_LENGTH);
+    }
+
+    private static int randomEnemyCount() {
+        return random.nextInt(MIN_NUMBER_OF_ENEMIES, MAX_NUMBER_OF_ENEMIES);
+    }
+
+    private static int randomFoodCount() {
+        return random.nextInt(MIN_NUMBER_OF_FOOD_ITEMS, MAX_NUMBER_OF_FOOD_ITEMS);
     }
 
     public void play() {
@@ -86,12 +109,12 @@ public class GameFacade {
 
         UIStringBuilder.append("_____________________________________________________________________________\n");
         if (currentRoom.hasNeighbor(DirectionType.NORTH)) {
-            UIStringBuilder.append("|                                    .                                      |\n");
-            UIStringBuilder.append("|                                  .:;:.                                    |\n");
-            UIStringBuilder.append("|                                .:;;;;;:.                                  |\n");
-            UIStringBuilder.append("|                                  ;;;;;                                    |\n");
-            UIStringBuilder.append("|                                  ;;;;;                                    |\n");
-            UIStringBuilder.append("|                                 (north)                                   |\n");
+            UIStringBuilder.append("|                                     .                                     |\n");
+            UIStringBuilder.append("|                                   .:;:.                                   |\n");
+            UIStringBuilder.append("|                                 .:;;;;;:.                                 |\n");
+            UIStringBuilder.append("|                                   ;;;;;                                   |\n");
+            UIStringBuilder.append("|                                   ;;;;;                                   |\n");
+            UIStringBuilder.append("|                                  (north)                                  |\n");
         }
         else {
             UIStringBuilder.append("|                                                                           |\n");
@@ -120,6 +143,22 @@ public class GameFacade {
         }
         UIStringBuilder.append("|                                                                           |\n");
 
+        if (currentRoom.hasNeighbor(DirectionType.WEST)) {
+            UIStringBuilder.append("|         .                                                                 |\n");
+            UIStringBuilder.append("|       .;;.......                                                          |\n");
+            UIStringBuilder.append("|     .;;;;:::::::   (west)                                                 |\n");
+            UIStringBuilder.append("|      ':;;:::::::                                                          |\n");
+            UIStringBuilder.append("|        ':                                                                 |\n");
+        }
+        else {
+            UIStringBuilder.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
+        }
+        UIStringBuilder.append("|                                                                           |\n");
+
         if (currentRoom.hasArtifacts()) {
             UIStringBuilder.append("|                               __________                                  |\n");
             UIStringBuilder.append("|                              /\\____;;___\\                                 |\n");
@@ -140,12 +179,48 @@ public class GameFacade {
             UIStringBuilder.append("|                                                                           |\n");
             UIStringBuilder.append("|                                                                           |\n");
         }
+
+        if (currentRoom.hasNeighbor(DirectionType.EAST)) {
+            UIStringBuilder.append("|                                                                 .         |\n");
+            UIStringBuilder.append("|                                                          .......;;.       |\n");
+            UIStringBuilder.append("|                                                 (east)   :::::::;;;;.     |\n");
+            UIStringBuilder.append("|                                                          :::::::;;:'      |\n");
+            UIStringBuilder.append("|                                                                 :'        |\n");
+        }
+        else {
+            UIStringBuilder.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
+        }
+        UIStringBuilder.append("|                                                                           |\n");
+
         UIStringBuilder.append("|        (you)                                                              |\n");
         UIStringBuilder.append("|         `o^                                                               |\n");
         UIStringBuilder.append("|       ^\\/0\\_+---                                                          |\n");
         UIStringBuilder.append("|         /O\\                                                               |\n");
         UIStringBuilder.append("|        _| /_                                                              |\n");
         UIStringBuilder.append("|                                                                           |\n");
+
+        if (currentRoom.hasNeighbor(DirectionType.SOUTH)) {
+            UIStringBuilder.append("|                                   (south)                                 |\n");
+            UIStringBuilder.append("|                                    ;;;;;                                  |\n");
+            UIStringBuilder.append("|                                    ;;;;;                                  |\n");
+            UIStringBuilder.append("|                                  ..;;;;;..                                |\n");
+            UIStringBuilder.append("|                                   ':::::'                                 |\n");
+            UIStringBuilder.append("|                                     ':`                                   |\n");
+        }
+        else {
+            UIStringBuilder.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
+            UIStringBuilder.append("|                                                                           |\n");
+        }
+        UIStringBuilder.append("|                                                                           |\n");
+
         UIStringBuilder.append("_____________________________________________________________________________\n");
         
         UIStringBuilder.append(" LOCATION: \n").append(currentRoom.toString()).append("\n\n");
@@ -185,7 +260,6 @@ public class GameFacade {
         logger.info("║      WELCOME TO JAVA GUYS DUNGEON!     ║");
         logger.info("╚════════════════════════════════════════╝");
         logger.info("\n");
-        logger.info("Game started with maze:\n" + dungeon.maze.toString());
     }
 
     public static void printInstructions() {
